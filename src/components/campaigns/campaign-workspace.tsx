@@ -6,6 +6,8 @@ import { WorkspaceHeader } from '@/components/layout/workspace-header'
 import { WorkspaceTabs } from '@/components/layout/workspace-tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TacticsGrid } from '@/components/tactics/tactics-grid'
+import { AudienceForm } from '@/components/audience/audience-form'
+import { BudgetSummary } from '@/components/budget/budget-summary'
 import type { CampaignStatus } from '@/lib/constants'
 
 interface CampaignWorkspaceProps {
@@ -55,6 +57,16 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
     />
   )
 
+  const audienceContent = <AudienceForm campaignId={campaignId} />
+
+  const budgetContent = (
+    <BudgetSummary
+      campaignId={campaignId}
+      tactics={tactics}
+      campaign={campaign}
+    />
+  )
+
   return (
     <div className="flex flex-col h-full">
       <WorkspaceHeader
@@ -63,7 +75,11 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
         onStatusChange={handleStatusChange}
       />
       <div className="flex-1 overflow-hidden">
-        <WorkspaceTabs tacticsContent={tacticsContent} />
+        <WorkspaceTabs
+          tacticsContent={tacticsContent}
+          audienceContent={audienceContent}
+          budgetContent={budgetContent}
+        />
       </div>
     </div>
   )
