@@ -5,6 +5,7 @@ import { useTactics } from '@/hooks/use-tactics'
 import { WorkspaceHeader } from '@/components/layout/workspace-header'
 import { WorkspaceTabs } from '@/components/layout/workspace-tabs'
 import { Skeleton } from '@/components/ui/skeleton'
+import { TacticsGrid } from '@/components/tactics/tactics-grid'
 import type { CampaignStatus } from '@/lib/constants'
 
 interface CampaignWorkspaceProps {
@@ -13,7 +14,7 @@ interface CampaignWorkspaceProps {
 
 export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   const { campaign, isLoading: campaignLoading, error: campaignError, mutate } = useCampaign(campaignId)
-  const { tactics, isLoading: tacticsLoading } = useTactics(campaignId)
+  const { tactics } = useTactics(campaignId)
 
   const allocatedBudget = tactics.reduce(
     (sum: number, t: { budget?: number }) => sum + (t.budget ?? 0),
@@ -48,27 +49,10 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   }
 
   const tacticsContent = (
-    <div className="p-6">
-      {tacticsLoading ? (
-        <div className="space-y-3">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-12 w-full rounded-md" />
-          ))}
-        </div>
-      ) : tactics.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-gray-500 text-sm">No tactics yet. Add your first tactic to get started.</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {tactics.map((tactic: { id: string; name: string }) => (
-            <div key={tactic.id} className="rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700">
-              {tactic.name}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <TacticsGrid
+      campaignId={campaignId}
+      campaignBudget={campaign.budget ?? 0}
+    />
   )
 
   return (
