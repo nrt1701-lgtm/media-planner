@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { TacticsGrid } from '@/components/tactics/tactics-grid'
 import { AudienceForm } from '@/components/audience/audience-form'
 import { BudgetSummary } from '@/components/budget/budget-summary'
+import { DocumentHub } from '@/components/documents/document-hub'
 import type { CampaignStatus } from '@/lib/constants'
 
 interface CampaignWorkspaceProps {
@@ -67,6 +68,14 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
     />
   )
 
+  const documentsContent = (
+    <DocumentHub
+      campaignId={campaignId}
+      campaign={campaign}
+      tactics={tactics}
+    />
+  )
+
   return (
     <div className="flex flex-col h-full">
       <WorkspaceHeader
@@ -79,6 +88,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
           tacticsContent={tacticsContent}
           audienceContent={audienceContent}
           budgetContent={budgetContent}
+          documentsContent={documentsContent}
         />
       </div>
     </div>
