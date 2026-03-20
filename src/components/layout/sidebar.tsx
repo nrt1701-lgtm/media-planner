@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { LayoutGrid, FileText, Settings } from 'lucide-react'
+import { LayoutGrid, FileText, Settings, Link2 } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { SidebarClientList } from './sidebar-client-list'
 
@@ -40,6 +40,13 @@ export function Sidebar() {
           >
             <FileText className="w-4 h-4 flex-shrink-0" />
             Ad Spec Library
+          </Link>
+          <Link
+            href="/utm-templates"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+          >
+            <Link2 className="w-4 h-4 flex-shrink-0" />
+            UTM Templates
           </Link>
         </nav>
       </div>
