@@ -81,12 +81,24 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
     // Optimistic update
     const optimistic = tactics.map((t: Tactic) => (t.id === id ? { ...t, ...updates } : t))
     mutate(optimistic, false)
-    await fetch(`/api/campaigns/${campaignId}/tactics/${id}`, {
+    const res = await fetch(`/api/campaigns/${campaignId}/tactics/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
     })
-    mutate()
+    if (res.ok) {
+      // Use the server response to update just this tactic, avoiding a full refetch
+      // that could overwrite another field being edited simultaneously
+      const saved = await res.json()
+      mutate(
+        (current: Tactic[] | undefined) =>
+          (current ?? tactics).map((t: Tactic) => (t.id === id ? { ...t, ...saved } : t)),
+        false
+      )
+    } else {
+      // On error, revalidate to restore server state
+      mutate()
+    }
   }
 
   async function duplicateTactic(tactic: Tactic) {
