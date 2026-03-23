@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { TableRow, TableCell } from '@/components/ui/table'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Badge } from '@/components/ui/badge'
@@ -20,19 +20,19 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { InlineCell } from './inline-cell'
+import { InlineCell, type CellHandle } from './inline-cell'
 import { ChannelSelect } from './channel-select'
+import { RateTypeSelect } from './rate-type-select'
 import { AdSpecPicker } from './ad-spec-picker'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { GripVerticalIcon, MoreHorizontalIcon, CopyIcon, Trash2Icon } from 'lucide-react'
-import { RATE_TYPES, type RateType } from '@/lib/constants'
+import { type RateType } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
+
+const TAB_ORDER = [
+  'name', 'channel', 'platform', 'placement',
+  'flight_start', 'flight_end', 'budget', 'rate_type', 'rate',
+  'landing_page_url',
+] as const
 
 interface AdSpec {
   id: string
@@ -112,6 +112,17 @@ export function TacticRow({
   const [adSpecOpen, setAdSpecOpen] = useState(false)
   const [deleting, setDeleting] = useState(false)
 
+  // Cell focus registry for Tab navigation
+  const cellRefs = useRef<Record<string, CellHandle | null>>({})
+
+  const focusCell = useCallback((currentKey: string, direction: 1 | -1) => {
+    const idx = TAB_ORDER.indexOf(currentKey as typeof TAB_ORDER[number])
+    const nextIdx = idx + direction
+    if (nextIdx >= 0 && nextIdx < TAB_ORDER.length) {
+      cellRefs.current[TAB_ORDER[nextIdx]]?.focus()
+    }
+  }, [])
+
   // Auto-suggest name when empty and channel/platform/placement are set
   function buildSuggestedName(updates: Partial<Tactic>) {
     const ch = updates.channel ?? tactic.channel
@@ -180,39 +191,51 @@ export function TacticRow({
         {/* Name */}
         <TableCell className="min-w-[140px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.name = h }}
             value={tactic.name}
             placeholder="Tactic name"
             onSave={(v) => patch({ name: v })}
+            onTab={() => focusCell('name', 1)}
+            onShiftTab={() => focusCell('name', -1)}
           />
         </TableCell>
 
         {/* Channel */}
         <TableCell className="min-w-[110px]">
           <ChannelSelect
+            ref={(h) => { cellRefs.current.channel = h }}
             value={tactic.channel}
             onSave={(v) => patch({ channel: v })}
+            onTab={() => focusCell('channel', 1)}
+            onShiftTab={() => focusCell('channel', -1)}
           />
         </TableCell>
 
         {/* Platform */}
         <TableCell className="min-w-[110px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.platform = h }}
             value={tactic.platform}
             placeholder="—"
             onSave={(v) => patch({ platform: v })}
+            onTab={() => focusCell('platform', 1)}
+            onShiftTab={() => focusCell('platform', -1)}
           />
         </TableCell>
 
         {/* Placement */}
         <TableCell className="min-w-[110px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.placement = h }}
             value={tactic.placement}
             placeholder="—"
             onSave={(v) => patch({ placement: v })}
+            onTab={() => focusCell('placement', 1)}
+            onShiftTab={() => focusCell('placement', -1)}
           />
         </TableCell>
 
-        {/* Formats (ad specs) */}
+        {/* Formats (ad specs) — skipped in tab order */}
         <TableCell className="min-w-[120px]">
           <button
             type="button"
@@ -234,67 +257,71 @@ export function TacticRow({
         {/* Flight Start */}
         <TableCell className="min-w-[110px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.flight_start = h }}
             value={tactic.flight_start}
             variant="date"
             placeholder="—"
             displayFormat={formatDate}
             onSave={(v) => patch({ flight_start: v || null })}
+            onTab={() => focusCell('flight_start', 1)}
+            onShiftTab={() => focusCell('flight_start', -1)}
           />
         </TableCell>
 
         {/* Flight End */}
         <TableCell className="min-w-[110px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.flight_end = h }}
             value={tactic.flight_end}
             variant="date"
             placeholder="—"
             displayFormat={formatDate}
             onSave={(v) => patch({ flight_end: v || null })}
+            onTab={() => focusCell('flight_end', 1)}
+            onShiftTab={() => focusCell('flight_end', -1)}
           />
         </TableCell>
 
         {/* Budget */}
         <TableCell className="min-w-[100px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.budget = h }}
             value={tactic.budget}
             variant="number"
             placeholder="$0"
             displayFormat={(v) => formatCurrency(v as number)}
             onSave={(v) => patch({ budget: v === '' ? 0 : parseFloat(v) })}
+            onTab={() => focusCell('budget', 1)}
+            onShiftTab={() => focusCell('budget', -1)}
           />
         </TableCell>
 
         {/* Rate Type */}
         <TableCell className="min-w-[100px]">
-          <Select
-            value={tactic.rate_type ?? 'CPM'}
-            onValueChange={(v) => patch({ rate_type: v as RateType })}
-          >
-            <SelectTrigger className="h-7 w-full border-transparent bg-transparent hover:bg-blue-50 hover:border-blue-200 text-sm px-1.5 focus:ring-2 focus:ring-blue-200">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {RATE_TYPES.map((rt) => (
-                <SelectItem key={rt} value={rt}>
-                  {rt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <RateTypeSelect
+            ref={(h) => { cellRefs.current.rate_type = h }}
+            value={tactic.rate_type}
+            onSave={(v) => patch({ rate_type: v })}
+            onTab={() => focusCell('rate_type', 1)}
+            onShiftTab={() => focusCell('rate_type', -1)}
+          />
         </TableCell>
 
         {/* Rate */}
         <TableCell className="min-w-[90px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.rate = h }}
             value={tactic.rate}
             variant="number"
             placeholder="—"
             displayFormat={(v) => v == null ? null : `$${v}`}
             onSave={(v) => patch({ rate: v === '' ? 0 : parseFloat(v) })}
+            onTab={() => focusCell('rate', 1)}
+            onShiftTab={() => focusCell('rate', -1)}
           />
         </TableCell>
 
-        {/* Est. Impressions */}
+        {/* Est. Impressions — read-only, skipped in tab order */}
         <TableCell className="min-w-[110px] text-gray-600 text-sm px-2">
           {formatImpressions(tactic.est_impressions) ?? <span className="text-gray-400">—</span>}
         </TableCell>
@@ -302,9 +329,12 @@ export function TacticRow({
         {/* Landing Page URL */}
         <TableCell className="min-w-[150px]">
           <InlineCell
+            ref={(h) => { cellRefs.current.landing_page_url = h }}
             value={tactic.landing_page_url}
             placeholder="—"
             onSave={(v) => patch({ landing_page_url: v || null })}
+            onTab={() => focusCell('landing_page_url', 1)}
+            onShiftTab={() => focusCell('landing_page_url', -1)}
           />
         </TableCell>
 

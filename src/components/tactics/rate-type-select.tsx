@@ -1,7 +1,6 @@
 'use client'
 
 import { useRef, forwardRef, useImperativeHandle } from 'react'
-import { useChannels } from '@/hooks/use-channels'
 import {
   Select,
   SelectContent,
@@ -9,25 +8,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { RATE_TYPES, type RateType } from '@/lib/constants'
 import type { CellHandle } from './inline-cell'
 
-interface Channel {
-  id: string
-  name: string
-}
-
-interface ChannelSelectProps {
-  value: string | null | undefined
-  onSave: (value: string) => Promise<void> | void
+interface RateTypeSelectProps {
+  value: RateType | null | undefined
+  onSave: (value: RateType) => void
   onTab?: () => void
   onShiftTab?: () => void
 }
 
-export const ChannelSelect = forwardRef<CellHandle, ChannelSelectProps>(function ChannelSelect(
+export const RateTypeSelect = forwardRef<CellHandle, RateTypeSelectProps>(function RateTypeSelect(
   { value, onSave, onTab, onShiftTab },
   ref,
 ) {
-  const { channels } = useChannels()
   const triggerRef = useRef<HTMLButtonElement>(null)
 
   useImperativeHandle(ref, () => ({
@@ -36,8 +30,8 @@ export const ChannelSelect = forwardRef<CellHandle, ChannelSelectProps>(function
 
   return (
     <Select
-      value={value ?? ''}
-      onValueChange={(v) => onSave(v)}
+      value={value ?? 'CPM'}
+      onValueChange={(v) => onSave(v as RateType)}
     >
       <SelectTrigger
         ref={triggerRef}
@@ -48,14 +42,14 @@ export const ChannelSelect = forwardRef<CellHandle, ChannelSelectProps>(function
             else onTab?.()
           }
         }}
-        className="h-7 w-full min-w-[100px] border-transparent bg-transparent hover:bg-blue-50 hover:border-blue-200 text-sm px-1.5 focus:ring-2 focus:ring-blue-200"
+        className="h-7 w-full border-transparent bg-transparent hover:bg-blue-50 hover:border-blue-200 text-sm px-1.5 focus:ring-2 focus:ring-blue-200"
       >
-        <SelectValue placeholder={<span className="text-gray-400">—</span>} />
+        <SelectValue />
       </SelectTrigger>
       <SelectContent>
-        {channels.map((ch: Channel) => (
-          <SelectItem key={ch.id} value={ch.name}>
-            {ch.name}
+        {RATE_TYPES.map((rt) => (
+          <SelectItem key={rt} value={rt}>
+            {rt}
           </SelectItem>
         ))}
       </SelectContent>

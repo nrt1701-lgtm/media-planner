@@ -1,7 +1,9 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { cn } from '@/lib/utils'
+
+export type CellHandle = { focus: () => void }
 
 type InlineCellVariant = 'text' | 'number' | 'date'
 
@@ -12,20 +14,26 @@ interface InlineCellProps {
   className?: string
   onSave: (value: string) => Promise<void> | void
   displayFormat?: (value: string | number | null | undefined) => string | null
+  onTab?: () => void
+  onShiftTab?: () => void
 }
 
-export function InlineCell({
+export const InlineCell = forwardRef<CellHandle, InlineCellProps>(function InlineCell({
   value,
   variant = 'text',
   placeholder = '—',
   className,
   onSave,
   displayFormat,
-}: InlineCellProps) {
+  onTab,
+  onShiftTab,
+}, ref) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState('')
   const [saving, setSaving] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  useImperativeHandle(ref, () => ({ focus: startEdit }))
 
   useEffect(() => {
     if (editing && inputRef.current) {
@@ -59,7 +67,12 @@ export function InlineCell({
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === 'Enter') {
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      commit()
+      if (e.shiftKey) onShiftTab?.()
+      else onTab?.()
+    } else if (e.key === 'Enter') {
       e.preventDefault()
       commit()
     } else if (e.key === 'Escape') {
@@ -101,4 +114,4 @@ export function InlineCell({
       {displayValue ?? <span className="text-gray-400">{placeholder}</span>}
     </button>
   )
-}
+})
