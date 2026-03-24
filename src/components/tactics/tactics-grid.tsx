@@ -18,6 +18,7 @@ import { BudgetFooter } from './budget-footer'
 import { BulkActionsBar } from './bulk-actions-bar'
 import { PlusIcon } from 'lucide-react'
 import type { RateType } from '@/lib/constants'
+import { calculateImpressions } from '@/lib/impressions/calculate'
 
 interface Tactic {
   id: string
@@ -78,23 +79,35 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
   }
 
   async function patchTactic(id: string, updates: Partial<Tactic>) {
-    // Optimistic update
-    const optimistic = tactics.map((t: Tactic) => (t.id === id ? { ...t, ...updates } : t))
-    mutate(optimistic, false)
+    // Optimistic update — use functional updater to avoid stale closure when
+    // two fields are patched in rapid succession (e.g. Tab through budget → rate).
+    mutate(
+      (current: Tactic[] | undefined) =>
+        (current ?? []).map((t: Tactic) => (t.id === id ? { ...t, ...updates } : t)),
+      false
+    )
     const res = await fetch(`/api/campaigns/${campaignId}/tactics/${id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
     })
     if (res.ok) {
-      const saved = await res.json()
-      // Only merge the fields we sent + server-recalculated est_impressions.
-      // Spreading the full server response would overwrite concurrent optimistic
-      // updates to other fields (e.g. budget save overwrites a pending rate edit).
-      const merged: Partial<Tactic> = { ...updates, est_impressions: saved.est_impressions }
+      // Merge confirmed fields, then recalculate est_impressions client-side
+      // from the full merged tactic state. This avoids the race condition where
+      // the budget PATCH returns est_impressions=null (server saw rate=0 at that
+      // instant) and later overwrites the correct value set by the rate PATCH.
       mutate(
         (current: Tactic[] | undefined) =>
-          (current ?? []).map((t: Tactic) => (t.id === id ? { ...t, ...merged } : t)),
+          (current ?? []).map((t: Tactic) => {
+            if (t.id !== id) return t
+            const next: Tactic = { ...t, ...updates }
+            if ((next.rate_type as RateType) === 'CPM' && next.budget != null && next.rate != null) {
+              next.est_impressions = calculateImpressions(next.budget, next.rate, next.rate_type as RateType)
+            } else {
+              next.est_impressions = null
+            }
+            return next
+          }),
         false
       )
     } else {
