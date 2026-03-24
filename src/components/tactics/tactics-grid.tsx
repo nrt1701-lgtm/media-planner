@@ -87,12 +87,14 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
       body: JSON.stringify(updates),
     })
     if (res.ok) {
-      // Use the server response to update just this tactic, avoiding a full refetch
-      // that could overwrite another field being edited simultaneously
       const saved = await res.json()
+      // Only merge the fields we sent + server-recalculated est_impressions.
+      // Spreading the full server response would overwrite concurrent optimistic
+      // updates to other fields (e.g. budget save overwrites a pending rate edit).
+      const merged: Partial<Tactic> = { ...updates, est_impressions: saved.est_impressions }
       mutate(
         (current: Tactic[] | undefined) =>
-          (current ?? tactics).map((t: Tactic) => (t.id === id ? { ...t, ...saved } : t)),
+          (current ?? []).map((t: Tactic) => (t.id === id ? { ...t, ...merged } : t)),
         false
       )
     } else {
@@ -291,9 +293,9 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                   />
                 </TableHead>
                 <TableHead className="w-6 px-1" />
-                <TableHead className="min-w-[140px]">Name</TableHead>
-                <TableHead className="min-w-[110px]">Channel</TableHead>
                 <TableHead className="min-w-[110px]">Platform</TableHead>
+                <TableHead className="min-w-[110px]">Channel</TableHead>
+                <TableHead className="min-w-[140px]">Name</TableHead>
                 <TableHead className="min-w-[110px]">Placement</TableHead>
                 <TableHead className="min-w-[120px]">Format(s)</TableHead>
                 <TableHead className="min-w-[110px]">Flight Start</TableHead>

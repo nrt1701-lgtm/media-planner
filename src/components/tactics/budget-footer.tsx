@@ -10,8 +10,9 @@ function formatCurrency(n: number) {
 }
 
 export function BudgetFooter({ allocated, total }: BudgetFooterProps) {
+  const hasBudget = total > 0
   const remaining = total - allocated
-  const isOver = remaining < 0
+  const isOver = hasBudget && remaining < 0
 
   return (
     <div className="flex items-center gap-6 px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm">
@@ -22,13 +23,13 @@ export function BudgetFooter({ allocated, total }: BudgetFooterProps) {
       <div className="text-gray-300">|</div>
       <div className="flex items-center gap-1.5">
         <span className="text-gray-500">Campaign Budget:</span>
-        <span className="font-medium text-gray-900">{formatCurrency(total)}</span>
+        <span className="font-medium text-gray-900">{hasBudget ? formatCurrency(total) : <span className="text-gray-400">Not set</span>}</span>
       </div>
       <div className="text-gray-300">|</div>
       <div className="flex items-center gap-1.5">
         <span className="text-gray-500">Remaining:</span>
-        <span className={`font-semibold ${isOver ? 'text-amber-600' : 'text-green-600'}`}>
-          {formatCurrency(remaining)}
+        <span className={`font-semibold ${isOver ? 'text-amber-600' : hasBudget ? 'text-green-600' : 'text-gray-500'}`}>
+          {hasBudget ? formatCurrency(remaining) : '—'}
         </span>
         {isOver && (
           <span className="text-xs text-amber-600 font-medium">(over budget)</span>

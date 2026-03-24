@@ -29,7 +29,7 @@ import { type RateType } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
 
 const TAB_ORDER = [
-  'name', 'channel', 'platform', 'placement',
+  'platform', 'channel', 'name', 'placement',
   'flight_start', 'flight_end', 'budget', 'rate_type', 'rate',
   'landing_page_url',
 ] as const
@@ -188,15 +188,15 @@ export function TacticRow({
           <GripVerticalIcon className="size-4 text-gray-300 group-hover:text-gray-400" />
         </TableCell>
 
-        {/* Name */}
-        <TableCell className="min-w-[140px]">
+        {/* Platform */}
+        <TableCell className="min-w-[110px]">
           <InlineCell
-            ref={(h) => { cellRefs.current.name = h }}
-            value={tactic.name}
-            placeholder="Tactic name"
-            onSave={(v) => patch({ name: v })}
-            onTab={() => focusCell('name', 1)}
-            onShiftTab={() => focusCell('name', -1)}
+            ref={(h) => { cellRefs.current.platform = h }}
+            value={tactic.platform}
+            placeholder="—"
+            onSave={(v) => patch({ platform: v })}
+            onTab={() => focusCell('platform', 1)}
+            onShiftTab={() => focusCell('platform', -1)}
           />
         </TableCell>
 
@@ -211,15 +211,15 @@ export function TacticRow({
           />
         </TableCell>
 
-        {/* Platform */}
-        <TableCell className="min-w-[110px]">
+        {/* Name */}
+        <TableCell className="min-w-[140px]">
           <InlineCell
-            ref={(h) => { cellRefs.current.platform = h }}
-            value={tactic.platform}
-            placeholder="—"
-            onSave={(v) => patch({ platform: v })}
-            onTab={() => focusCell('platform', 1)}
-            onShiftTab={() => focusCell('platform', -1)}
+            ref={(h) => { cellRefs.current.name = h }}
+            value={tactic.name}
+            placeholder="Tactic name"
+            onSave={(v) => patch({ name: v })}
+            onTab={() => focusCell('name', 1)}
+            onShiftTab={() => focusCell('name', -1)}
           />
         </TableCell>
 
