@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const search = request.nextUrl.searchParams.get('search')
 
   let query = supabase
-    .from('ad_specs')
+    .from('ad_spec_library')
     .select('*')
     .order('platform')
     .order('placement')
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { data, error } = await supabase
-    .from('ad_specs')
+    .from('ad_spec_library')
     .insert(parsed.data)
     .select()
     .single()

@@ -16,7 +16,7 @@ export async function PATCH(
   }
 
   const { data, error } = await supabase
-    .from('ad_specs')
+    .from('ad_spec_library')
     .update(parsed.data)
     .eq('id', specId)
     .select()
@@ -34,7 +34,7 @@ export async function DELETE(
   const supabase = await createClient()
 
   const { error } = await supabase
-    .from('ad_specs')
+    .from('ad_spec_library')
     .delete()
     .eq('id', specId)
 
