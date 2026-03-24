@@ -12,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
 import { Plus, Trash2 } from 'lucide-react'
 
 interface AdSpec {
@@ -24,6 +25,7 @@ interface AdSpec {
   max_file_size?: string | null
   duration_limits?: string | null
   char_limits?: Record<string, number> | null
+  notes?: string | null
 }
 
 interface AdSpecFormDialogProps {
@@ -42,6 +44,7 @@ const EMPTY_SPEC: AdSpec = {
   max_file_size: '',
   duration_limits: '',
   char_limits: null,
+  notes: '',
 }
 
 export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFormDialogProps) {
@@ -110,6 +113,7 @@ export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFo
         dimensions: form.dimensions || null,
         max_file_size: form.max_file_size || null,
         duration_limits: form.duration_limits || null,
+        notes: form.notes || null,
       }
 
       const url = isEdit ? `/api/ad-specs/${spec!.id}` : '/api/ad-specs'
@@ -260,6 +264,18 @@ export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFo
                 </Button>
               </div>
             ))}
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="notes">Notes</Label>
+            <Textarea
+              id="notes"
+              placeholder="Any additional notes or context…"
+              value={form.notes ?? ''}
+              onChange={(e) => setField('notes', e.target.value)}
+              rows={3}
+              className="resize-none"
+            />
           </div>
         </div>
 

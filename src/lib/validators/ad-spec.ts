@@ -9,6 +9,7 @@ export const createAdSpecSchema = z.object({
   max_file_size: z.string().optional().nullable(),
   duration_limits: z.string().optional().nullable(),
   char_limits: z.record(z.string(), z.number()).optional().nullable(),
+  notes: z.string().optional().nullable(),
 })
 
 export const updateAdSpecSchema = createAdSpecSchema.partial()

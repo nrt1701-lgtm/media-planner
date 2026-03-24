@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 import { useAdSpecs } from '@/hooks/use-ad-specs'
 import { AdSpecFormDialog } from './ad-spec-form-dialog'
+import { CsvImportDialog } from './csv-import-dialog'
 import {
   Table,
   TableBody,
@@ -29,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Plus, MoreHorizontal, Search } from 'lucide-react'
+import { Plus, MoreHorizontal, Search, Upload } from 'lucide-react'
 
 interface AdSpec {
   id: string
@@ -41,6 +42,7 @@ interface AdSpec {
   max_file_size?: string | null
   duration_limits?: string | null
   char_limits?: Record<string, number> | null
+  notes?: string | null
 }
 
 export function AdSpecTable() {
@@ -48,6 +50,7 @@ export function AdSpecTable() {
   const [platformFilter, setPlatformFilter] = useState<string>('all')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingSpec, setEditingSpec] = useState<AdSpec | null>(null)
+  const [importOpen, setImportOpen] = useState(false)
 
   const { adSpecs, isLoading, mutate } = useAdSpecs(
     platformFilter !== 'all' ? platformFilter : undefined
@@ -116,6 +119,10 @@ export function AdSpecTable() {
           </SelectContent>
         </Select>
 
+        <Button variant="outline" size="sm" onClick={() => setImportOpen(true)} className="flex items-center gap-1.5">
+          <Upload className="w-4 h-4" />
+          Import CSV
+        </Button>
         <Button onClick={handleAdd} size="sm" className="flex items-center gap-1.5">
           <Plus className="w-4 h-4" />
           Add Spec
@@ -134,6 +141,7 @@ export function AdSpecTable() {
               <TableHead className="text-xs font-semibold text-muted-foreground">Max Size</TableHead>
               <TableHead className="text-xs font-semibold text-muted-foreground">Duration</TableHead>
               <TableHead className="text-xs font-semibold text-muted-foreground">Char Limits</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Notes</TableHead>
               <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
@@ -141,7 +149,7 @@ export function AdSpecTable() {
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 9 }).map((_, j) => (
+                  {Array.from({ length: 10 }).map((_, j) => (
                     <TableCell key={j}>
                       <Skeleton className="h-4 w-full" />
                     </TableCell>
@@ -150,7 +158,7 @@ export function AdSpecTable() {
               ))
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="text-center text-sm text-muted-foreground py-10">
+                <TableCell colSpan={10} className="text-center text-sm text-muted-foreground py-10">
                   {search || platformFilter !== 'all'
                     ? 'No specs match your filters.'
                     : 'No ad specs yet. Click "Add Spec" to get started.'}
@@ -189,6 +197,11 @@ export function AdSpecTable() {
                       '—'
                     )}
                   </TableCell>
+                  <TableCell className="text-sm text-muted-foreground max-w-[180px]">
+                    {spec.notes ? (
+                      <span className="truncate block" title={spec.notes}>{spec.notes}</span>
+                    ) : '—'}
+                  </TableCell>
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -221,6 +234,12 @@ export function AdSpecTable() {
         onOpenChange={setDialogOpen}
         spec={editingSpec}
         onSaved={() => mutate()}
+      />
+
+      <CsvImportDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        onImported={() => mutate()}
       />
     </div>
   )
