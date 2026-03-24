@@ -34,8 +34,8 @@ export function DocumentHub({ campaignId, campaign, tactics }: DocumentHubProps)
   return (
     <div className="p-6 max-w-3xl space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-gray-900">Generate Documents</h2>
-        <p className="text-sm text-gray-500 mt-1">
+        <h2 className="text-lg font-semibold text-foreground">Generate Documents</h2>
+        <p className="text-sm text-muted-foreground mt-1">
           Export your media plan as structured documents for trafficking and client delivery.
         </p>
       </div>

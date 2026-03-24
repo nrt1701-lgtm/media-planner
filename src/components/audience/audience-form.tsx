@@ -83,13 +83,13 @@ function TagInput({
       {tags.map((tag) => (
         <span
           key={tag}
-          className="inline-flex items-center gap-1 bg-gray-100 text-gray-800 text-xs font-medium px-2 py-0.5 rounded-md"
+          className="inline-flex items-center gap-1 bg-muted text-foreground text-xs font-medium px-2 py-0.5 rounded-md"
         >
           {tag}
           <button
             type="button"
             onClick={() => removeTag(tag)}
-            className="text-gray-500 hover:text-gray-800 transition-colors"
+            className="text-muted-foreground hover:text-foreground transition-colors"
             aria-label={`Remove ${tag}`}
           >
             <XIcon className="size-3" />
@@ -239,8 +239,8 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
     <div className="p-6 space-y-6 max-w-3xl">
       {/* Save status */}
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-900">Audience Strategy</h2>
-        <span className="text-xs text-gray-400">
+        <h2 className="text-lg font-semibold text-foreground">Audience Strategy</h2>
+        <span className="text-xs text-muted-foreground">
           {saveStatus === 'saving' && 'Saving...'}
           {saveStatus === 'saved' && 'Saved'}
           {saveStatus === 'error' && 'Error saving'}
@@ -250,7 +250,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
       {/* Plan metadata */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">Plan Details</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Plan Details</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div className="space-y-1.5">
@@ -278,7 +278,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
       {/* Demographics */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">Demographics</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Demographics</CardTitle>
         </CardHeader>
         <CardContent className="grid grid-cols-2 gap-4">
           <div className="space-y-1.5">
@@ -330,7 +330,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
       {/* Geographic */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">Geographic Targeting</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Geographic Targeting</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-1.5">
@@ -363,7 +363,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
                   onChange={(tags) => updateGeographic('markets', tags)}
                   placeholder="Type a market and press Enter..."
                 />
-                <p className="text-xs text-gray-500">Press Enter to add a market</p>
+                <p className="text-xs text-muted-foreground">Press Enter to add a market</p>
               </div>
               <div className="space-y-1.5">
                 <Label>States</Label>
@@ -372,7 +372,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
                   onChange={(tags) => updateGeographic('states', tags)}
                   placeholder="Type a state and press Enter..."
                 />
-                <p className="text-xs text-gray-500">Press Enter to add a state</p>
+                <p className="text-xs text-muted-foreground">Press Enter to add a state</p>
               </div>
             </>
           )}
@@ -382,7 +382,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
       {/* Behavioral */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">Behavioral Targeting</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Behavioral Targeting</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-1.5">
@@ -392,7 +392,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
               onChange={(tags) => updateBehavioral('segments', tags)}
               placeholder="Type a segment and press Enter..."
             />
-            <p className="text-xs text-gray-500">Press Enter to add a segment</p>
+            <p className="text-xs text-muted-foreground">Press Enter to add a segment</p>
           </div>
           <div className="space-y-1.5">
             <Label>Interests</Label>
@@ -401,7 +401,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
               onChange={(tags) => updateBehavioral('interests', tags)}
               placeholder="Type an interest and press Enter..."
             />
-            <p className="text-xs text-gray-500">Press Enter to add an interest</p>
+            <p className="text-xs text-muted-foreground">Press Enter to add an interest</p>
           </div>
         </CardContent>
       </Card>
@@ -409,7 +409,7 @@ export function AudienceForm({ campaignId }: AudienceFormProps) {
       {/* Custom Notes */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm font-medium text-gray-700">Custom Notes</CardTitle>
+          <CardTitle className="text-sm font-medium text-muted-foreground">Custom Notes</CardTitle>
         </CardHeader>
         <CardContent>
           <Textarea

@@ -38,7 +38,7 @@ function formatCurrency(n: number) {
 export function SpendTimelineChart({ tactics, campaign }: SpendTimelineChartProps) {
   if (!campaign?.start_date || !campaign?.end_date) {
     return (
-      <div className="flex items-center justify-center h-40 text-sm text-gray-400">
+      <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
         Set campaign dates to see spend timeline
       </div>
     )
@@ -76,7 +76,7 @@ export function SpendTimelineChart({ tactics, campaign }: SpendTimelineChartProp
 
   if (!hasData) {
     return (
-      <div className="flex items-center justify-center h-40 text-sm text-gray-400">
+      <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
         Add tactics with budgets and flight dates to see timeline
       </div>
     )
@@ -87,21 +87,21 @@ export function SpendTimelineChart({ tactics, campaign }: SpendTimelineChartProp
       <AreaChart data={data} margin={{ top: 8, right: 16, left: 8, bottom: 4 }}>
         <defs>
           <linearGradient id="spendGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.15} />
-            <stop offset="95%" stopColor="#4F46E5" stopOpacity={0.01} />
+            <stop offset="5%" stopColor="#1A8A7D" stopOpacity={0.15} />
+            <stop offset="95%" stopColor="#1A8A7D" stopOpacity={0.01} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
+        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#EDE6D8" />
         <XAxis
           dataKey="label"
-          tick={{ fontSize: 11, fill: '#6B7280' }}
+          tick={{ fontSize: 11, fill: '#7A94A8' }}
           axisLine={false}
           tickLine={false}
           interval="preserveStartEnd"
         />
         <YAxis
           tickFormatter={formatCurrency}
-          tick={{ fontSize: 11, fill: '#6B7280' }}
+          tick={{ fontSize: 11, fill: '#7A94A8' }}
           axisLine={false}
           tickLine={false}
           width={52}
@@ -117,7 +117,7 @@ export function SpendTimelineChart({ tactics, campaign }: SpendTimelineChartProp
               : value
           }
           contentStyle={{
-            border: '1px solid #E5E7EB',
+            border: '1px solid #EDE6D8',
             borderRadius: '6px',
             fontSize: 12,
           }}
@@ -125,7 +125,7 @@ export function SpendTimelineChart({ tactics, campaign }: SpendTimelineChartProp
         <Area
           type="monotone"
           dataKey="amount"
-          stroke="#4F46E5"
+          stroke="#1A8A7D"
           strokeWidth={2}
           fill="url(#spendGradient)"
           dot={false}

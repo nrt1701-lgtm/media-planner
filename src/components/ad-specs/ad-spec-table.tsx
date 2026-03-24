@@ -93,7 +93,7 @@ export function AdSpecTable() {
     <div className="space-y-4">
       <div className="flex items-center gap-3">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <Input
             placeholder="Search specs…"
             value={search}
@@ -122,18 +122,18 @@ export function AdSpecTable() {
         </Button>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+      <div className="rounded-lg border border-border bg-card overflow-hidden">
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50">
-              <TableHead className="text-xs font-semibold text-gray-600">Platform</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Placement</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Format</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Dimensions</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">File Types</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Max Size</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Duration</TableHead>
-              <TableHead className="text-xs font-semibold text-gray-600">Char Limits</TableHead>
+            <TableRow className="bg-muted">
+              <TableHead className="text-xs font-semibold text-muted-foreground">Platform</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Placement</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Format</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Dimensions</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">File Types</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Max Size</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Duration</TableHead>
+              <TableHead className="text-xs font-semibold text-muted-foreground">Char Limits</TableHead>
               <TableHead className="w-10" />
             </TableRow>
           </TableHeader>
@@ -150,7 +150,7 @@ export function AdSpecTable() {
               ))
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={9} className="text-center text-sm text-gray-500 py-10">
+                <TableCell colSpan={9} className="text-center text-sm text-muted-foreground py-10">
                   {search || platformFilter !== 'all'
                     ? 'No specs match your filters.'
                     : 'No ad specs yet. Click "Add Spec" to get started.'}
@@ -158,11 +158,11 @@ export function AdSpecTable() {
               </TableRow>
             ) : (
               filtered.map((spec) => (
-                <TableRow key={spec.id} className="hover:bg-gray-50">
-                  <TableCell className="text-sm font-medium text-gray-900">{spec.platform}</TableCell>
-                  <TableCell className="text-sm text-gray-600">{spec.placement}</TableCell>
-                  <TableCell className="text-sm text-gray-600">{spec.format_name}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{spec.dimensions ?? '—'}</TableCell>
+                <TableRow key={spec.id} className="hover:bg-muted/50">
+                  <TableCell className="text-sm font-medium text-foreground">{spec.platform}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{spec.placement}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{spec.format_name}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{spec.dimensions ?? '—'}</TableCell>
                   <TableCell>
                     {(spec.file_types ?? []).length > 0 ? (
                       <div className="flex flex-wrap gap-1">
@@ -173,12 +173,12 @@ export function AdSpecTable() {
                         ))}
                       </div>
                     ) : (
-                      <span className="text-sm text-gray-400">—</span>
+                      <span className="text-sm text-muted-foreground">—</span>
                     )}
                   </TableCell>
-                  <TableCell className="text-sm text-gray-500">{spec.max_file_size ?? '—'}</TableCell>
-                  <TableCell className="text-sm text-gray-500">{spec.duration_limits ?? '—'}</TableCell>
-                  <TableCell className="text-sm text-gray-500">
+                  <TableCell className="text-sm text-muted-foreground">{spec.max_file_size ?? '—'}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{spec.duration_limits ?? '—'}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">
                     {spec.char_limits && Object.keys(spec.char_limits).length > 0 ? (
                       <span>
                         {Object.entries(spec.char_limits)

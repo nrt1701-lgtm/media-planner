@@ -147,7 +147,7 @@ export function EditClientDialog({
               maxLength={10}
               required
             />
-            <p className="text-xs text-gray-500">Short code used in Workamajig (max 10 chars)</p>
+            <p className="text-xs text-muted-foreground">Short code used in Workamajig (max 10 chars)</p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-client-industry">Industry</Label>
@@ -183,7 +183,7 @@ export function EditClientDialog({
               <p className="text-sm text-red-600 font-medium">
                 Are you sure? This cannot be undone.
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Clients with active campaigns cannot be deleted.
               </p>
               <div className="flex gap-2">

@@ -113,7 +113,7 @@ export function AgencySettingsForm() {
           rows={8}
           className="font-mono text-sm"
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           These terms will appear at the bottom of every generated IO PDF. Markdown formatting is supported.
         </p>
       </div>
@@ -128,7 +128,7 @@ export function AgencySettingsForm() {
           onChange={(e) => setLeadTimeDays(e.target.value)}
           className="w-32"
         />
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           Business days required before campaign start for creative delivery.
         </p>
       </div>
@@ -148,7 +148,7 @@ export function AgencySettingsForm() {
             ))}
           </SelectContent>
         </Select>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-muted-foreground">
           This template will be pre-selected when generating UTM sheets.
         </p>
       </div>

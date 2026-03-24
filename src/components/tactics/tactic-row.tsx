@@ -167,7 +167,7 @@ export function TacticRow({
   return (
     <>
       <TableRow
-        className={`group transition-colors ${isDragOver ? 'bg-blue-50 border-t-2 border-t-blue-400' : ''} ${isSelected ? 'bg-blue-50/60' : ''}`}
+        className={`group transition-colors ${isDragOver ? 'bg-brand-teal/10 border-t-2 border-t-brand-teal' : ''} ${isSelected ? 'bg-brand-teal/10' : ''}`}
         draggable
         onDragStart={(e) => onDragStart(e, tactic.id)}
         onDragOver={(e) => onDragOver(e, tactic.id)}
@@ -185,7 +185,7 @@ export function TacticRow({
 
         {/* Drag handle */}
         <TableCell className="w-6 px-1 cursor-grab active:cursor-grabbing">
-          <GripVerticalIcon className="size-4 text-gray-300 group-hover:text-gray-400" />
+          <GripVerticalIcon className="size-4 text-muted-foreground group-hover:text-muted-foreground" />
         </TableCell>
 
         {/* Platform */}
@@ -240,10 +240,10 @@ export function TacticRow({
           <button
             type="button"
             onClick={() => setAdSpecOpen(true)}
-            className="flex flex-wrap gap-1 min-h-[28px] w-full text-left rounded px-1.5 py-0.5 hover:bg-blue-50 hover:ring-1 hover:ring-blue-200 transition-colors"
+            className="flex flex-wrap gap-1 min-h-[28px] w-full text-left rounded px-1.5 py-0.5 hover:bg-brand-teal/10 hover:ring-1 hover:ring-brand-teal/30 transition-colors"
           >
             {tacticAdSpecs.length === 0 ? (
-              <span className="text-gray-400 text-sm">—</span>
+              <span className="text-muted-foreground text-sm">—</span>
             ) : (
               tacticAdSpecs.map((s) => (
                 <Badge key={s.id} variant="secondary" className="text-xs font-normal">
@@ -322,8 +322,8 @@ export function TacticRow({
         </TableCell>
 
         {/* Est. Impressions — read-only, skipped in tab order */}
-        <TableCell className="min-w-[110px] text-gray-600 text-sm px-2">
-          {formatImpressions(tactic.est_impressions) ?? <span className="text-gray-400">—</span>}
+        <TableCell className="min-w-[110px] text-muted-foreground text-sm px-2">
+          {formatImpressions(tactic.est_impressions) ?? <span className="text-muted-foreground">—</span>}
         </TableCell>
 
         {/* Landing Page URL */}

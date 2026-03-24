@@ -93,7 +93,7 @@ export const InlineCell = forwardRef<CellHandle, InlineCellProps>(function Inlin
         onBlur={commit}
         onKeyDown={handleKeyDown}
         className={cn(
-          'w-full min-w-[80px] rounded border border-blue-400 bg-white px-1.5 py-0.5 text-sm outline-none ring-2 ring-blue-200',
+          'w-full min-w-[80px] rounded border border-brand-teal bg-white px-1.5 py-0.5 text-sm outline-none ring-2 ring-brand-teal/30',
           className
         )}
       />
@@ -106,12 +106,12 @@ export const InlineCell = forwardRef<CellHandle, InlineCellProps>(function Inlin
       onClick={startEdit}
       disabled={saving}
       className={cn(
-        'w-full text-left rounded px-1.5 py-0.5 text-sm hover:bg-blue-50 hover:ring-1 hover:ring-blue-200 transition-colors cursor-text',
+        'w-full text-left rounded px-1.5 py-0.5 text-sm hover:bg-brand-teal/10 hover:ring-1 hover:ring-brand-teal/30 transition-colors cursor-text',
         saving && 'opacity-50',
         className
       )}
     >
-      {displayValue ?? <span className="text-gray-400">{placeholder}</span>}
+      {displayValue ?? <span className="text-muted-foreground">{placeholder}</span>}
     </button>
   )
 })

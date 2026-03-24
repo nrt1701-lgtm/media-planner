@@ -76,7 +76,7 @@ export function BudgetTable({ tactics, campaignBudget }: BudgetTableProps) {
 
         <Table>
           <TableHeader>
-            <TableRow className="bg-gray-50/80 hover:bg-gray-50/80">
+            <TableRow className="bg-muted/80 hover:bg-muted/80">
               <TableHead className="min-w-[160px]">Tactic</TableHead>
               <TableHead className="min-w-[110px]">Channel</TableHead>
               <TableHead className="min-w-[100px] text-right">Budget</TableHead>
@@ -89,7 +89,7 @@ export function BudgetTable({ tactics, campaignBudget }: BudgetTableProps) {
           <TableBody>
             {tactics.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center text-gray-400 py-8 text-sm">
+                <TableCell colSpan={7} className="text-center text-muted-foreground py-8 text-sm">
                   No tactics yet
                 </TableCell>
               </TableRow>
@@ -108,39 +108,39 @@ export function BudgetTable({ tactics, campaignBudget }: BudgetTableProps) {
                 if (missingDates) warningMessages.push('Missing flight dates')
 
                 return (
-                  <TableRow key={tactic.id} className="hover:bg-gray-50/60">
-                    <TableCell className="font-medium text-gray-900">
+                  <TableRow key={tactic.id} className="hover:bg-muted/60">
+                    <TableCell className="font-medium text-foreground">
                       {tactic.name || (
-                        <span className="text-gray-400 italic">Untitled</span>
+                        <span className="text-muted-foreground italic">Untitled</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-gray-700">
+                    <TableCell className="text-muted-foreground">
                       {tactic.channel ?? (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
                     <TableCell className="text-right font-medium">
                       {budget > 0 ? formatCurrency(budget) : (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-gray-700 text-sm">
+                    <TableCell className="text-muted-foreground text-sm">
                       {tactic.rate_type && tactic.rate != null ? (
                         `${formatCurrency(tactic.rate)} ${tactic.rate_type}`
                       ) : (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right text-gray-700">
+                    <TableCell className="text-right text-muted-foreground">
                       {tactic.est_impressions != null ? (
                         formatNumber(tactic.est_impressions)
                       ) : (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
-                    <TableCell className="text-right text-gray-700">
+                    <TableCell className="text-right text-muted-foreground">
                       {budget > 0 ? `${pct.toFixed(1)}%` : (
-                        <span className="text-gray-400">—</span>
+                        <span className="text-muted-foreground">—</span>
                       )}
                     </TableCell>
                     <TableCell>
@@ -170,20 +170,20 @@ export function BudgetTable({ tactics, campaignBudget }: BudgetTableProps) {
 
         {/* Totals row */}
         {tactics.length > 0 && (
-          <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-t border-gray-200 text-sm">
-            <span className="font-medium text-gray-700">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-muted border-t border-border text-sm">
+            <span className="font-medium text-muted-foreground">
               {tactics.length} tactic{tactics.length !== 1 ? 's' : ''}
             </span>
             <div className="flex items-center gap-4">
-              <span className="text-gray-500">Total Allocated:</span>
-              <span className={`font-semibold ${isOverBudget ? 'text-red-600' : 'text-gray-900'}`}>
+              <span className="text-muted-foreground">Total Allocated:</span>
+              <span className={`font-semibold ${isOverBudget ? 'text-red-600' : 'text-foreground'}`}>
                 {formatCurrency(totalAllocated)}
               </span>
               {campaignBudget > 0 && (
                 <>
-                  <span className="text-gray-300">|</span>
-                  <span className="text-gray-500">Campaign Budget:</span>
-                  <span className="font-medium text-gray-900">{formatCurrency(campaignBudget)}</span>
+                  <span className="text-border">|</span>
+                  <span className="text-muted-foreground">Campaign Budget:</span>
+                  <span className="font-medium text-foreground">{formatCurrency(campaignBudget)}</span>
                 </>
               )}
             </div>

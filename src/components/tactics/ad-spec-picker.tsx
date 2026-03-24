@@ -106,16 +106,16 @@ export function AdSpecPicker({ open, onOpenChange, selectedIds, platform, onSave
               })}
             </div>
           )}
-          <div className="max-h-72 overflow-y-auto rounded border border-gray-200 divide-y divide-gray-100">
+          <div className="max-h-72 overflow-y-auto rounded border border-border divide-y divide-border">
             {isLoading ? (
-              <div className="p-4 text-sm text-gray-500 text-center">Loading...</div>
+              <div className="p-4 text-sm text-muted-foreground text-center">Loading...</div>
             ) : filtered.length === 0 ? (
-              <div className="p-4 text-sm text-gray-500 text-center">No specs found.</div>
+              <div className="p-4 text-sm text-muted-foreground text-center">No specs found.</div>
             ) : (
               filtered.map((spec: AdSpec) => (
                 <label
                   key={spec.id}
-                  className="flex items-start gap-3 px-3 py-2.5 hover:bg-gray-50 cursor-pointer"
+                  className="flex items-start gap-3 px-3 py-2.5 hover:bg-muted cursor-pointer"
                 >
                   <Checkbox
                     checked={selected.has(spec.id)}
@@ -123,8 +123,8 @@ export function AdSpecPicker({ open, onOpenChange, selectedIds, platform, onSave
                     className="mt-0.5"
                   />
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-medium text-gray-900">{spec.format_name}</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-sm font-medium text-foreground">{spec.format_name}</div>
+                    <div className="text-xs text-muted-foreground">
                       {spec.platform} · {spec.placement}
                       {spec.dimensions && ` · ${spec.dimensions}`}
                     </div>

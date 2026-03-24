@@ -15,20 +15,20 @@ export function BudgetFooter({ allocated, total }: BudgetFooterProps) {
   const isOver = hasBudget && remaining < 0
 
   return (
-    <div className="flex items-center gap-6 px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm">
+    <div className="flex items-center gap-6 px-4 py-3 bg-muted border-t border-border text-sm">
       <div className="flex items-center gap-1.5">
-        <span className="text-gray-500">Total Allocated:</span>
-        <span className="font-medium text-gray-900">{formatCurrency(allocated)}</span>
+        <span className="text-muted-foreground">Total Allocated:</span>
+        <span className="font-medium text-foreground">{formatCurrency(allocated)}</span>
       </div>
-      <div className="text-gray-300">|</div>
+      <div className="text-muted-foreground">|</div>
       <div className="flex items-center gap-1.5">
-        <span className="text-gray-500">Campaign Budget:</span>
-        <span className="font-medium text-gray-900">{hasBudget ? formatCurrency(total) : <span className="text-gray-400">Not set</span>}</span>
+        <span className="text-muted-foreground">Campaign Budget:</span>
+        <span className="font-medium text-foreground">{hasBudget ? formatCurrency(total) : <span className="text-muted-foreground">Not set</span>}</span>
       </div>
-      <div className="text-gray-300">|</div>
+      <div className="text-muted-foreground">|</div>
       <div className="flex items-center gap-1.5">
-        <span className="text-gray-500">Remaining:</span>
-        <span className={`font-semibold ${isOver ? 'text-amber-600' : hasBudget ? 'text-green-600' : 'text-gray-500'}`}>
+        <span className="text-muted-foreground">Remaining:</span>
+        <span className={`font-semibold ${isOver ? 'text-amber-600' : hasBudget ? 'text-green-600' : 'text-muted-foreground'}`}>
           {hasBudget ? formatCurrency(remaining) : '—'}
         </span>
         {isOver && (

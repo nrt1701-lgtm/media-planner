@@ -44,12 +44,12 @@ export function SidebarClientList() {
       {/* Search */}
       <div className="px-3">
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search clients…"
-            className="h-8 pl-8 text-xs bg-gray-50 border-gray-200"
+            className="h-8 pl-8 text-xs bg-muted border-border"
           />
         </div>
       </div>
@@ -64,7 +64,7 @@ export function SidebarClientList() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="px-4 py-4">
-            <p className="text-xs text-gray-400 italic">
+            <p className="text-xs text-muted-foreground italic">
               {search
                 ? 'No clients match your search'
                 : 'No clients yet. Create your first client to get started.'}
@@ -77,15 +77,15 @@ export function SidebarClientList() {
                 <div className="group flex items-center gap-1 w-full">
                   <button
                     onClick={() => toggleClient(client.id)}
-                    className="flex items-center gap-2 flex-1 min-w-0 px-3 py-2 rounded-md text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-100 transition-colors text-left"
+                    className="flex items-center gap-2 flex-1 min-w-0 px-3 py-2 rounded-md text-sm text-foreground hover:text-foreground hover:bg-sidebar-accent transition-colors text-left"
                   >
                     {expandedClientId === client.id ? (
-                      <ChevronDown className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
+                      <ChevronDown className="w-3.5 h-3.5 flex-shrink-0 text-muted-foreground" />
                     ) : (
-                      <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-gray-400" />
+                      <ChevronRight className="w-3.5 h-3.5 flex-shrink-0 text-muted-foreground" />
                     )}
                     <span className="truncate font-medium">{client.name}</span>
-                    <span className="ml-auto text-xs text-gray-400 font-mono flex-shrink-0">
+                    <span className="ml-auto text-xs text-muted-foreground font-mono flex-shrink-0">
                       {client.client_code}
                     </span>
                   </button>
@@ -131,7 +131,7 @@ export function SidebarClientList() {
         <Button
           variant="outline"
           size="sm"
-          className="w-full h-8 text-xs text-gray-600 border-dashed border-gray-300 hover:border-blue-400 hover:text-blue-600 justify-center gap-1.5"
+          className="w-full h-8 text-xs text-muted-foreground border-dashed border-border hover:border-brand-teal hover:text-brand-teal justify-center gap-1.5"
           onClick={() => setCreateOpen(true)}
         >
           <Plus className="w-3.5 h-3.5" />

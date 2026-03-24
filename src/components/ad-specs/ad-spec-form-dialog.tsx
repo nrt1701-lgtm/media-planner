@@ -193,7 +193,7 @@ export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFo
               value={fileTypesInput}
               onChange={(e) => setFileTypesInput(e.target.value)}
             />
-            <p className="text-xs text-gray-500">Comma-separated list of accepted file types.</p>
+            <p className="text-xs text-muted-foreground">Comma-separated list of accepted file types.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -232,7 +232,7 @@ export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFo
               </Button>
             </div>
             {charLimitPairs.length === 0 && (
-              <p className="text-xs text-gray-400">No character limits defined.</p>
+              <p className="text-xs text-muted-foreground">No character limits defined.</p>
             )}
             {charLimitPairs.map((pair, i) => (
               <div key={i} className="flex gap-2 items-center">
@@ -254,7 +254,7 @@ export function AdSpecFormDialog({ open, onOpenChange, spec, onSaved }: AdSpecFo
                   variant="ghost"
                   size="sm"
                   onClick={() => removeCharLimit(i)}
-                  className="h-9 w-9 p-0 text-gray-400 hover:text-red-600"
+                  className="h-9 w-9 p-0 text-muted-foreground hover:text-red-600"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </Button>

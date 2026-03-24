@@ -70,8 +70,8 @@ export function BulkActionsBar({
 
   return (
     <>
-      <div className="flex items-center gap-3 px-4 py-2.5 bg-blue-50 border-b border-blue-200">
-        <span className="text-sm font-medium text-blue-700">
+      <div className="flex items-center gap-3 px-4 py-2.5 bg-brand-teal/10 border-b border-brand-teal/30">
+        <span className="text-sm font-medium text-brand-teal">
           {selectedCount} tactic{selectedCount !== 1 ? 's' : ''} selected
         </span>
         <div className="flex items-center gap-2 ml-2">
@@ -107,7 +107,7 @@ export function BulkActionsBar({
         <button
           type="button"
           onClick={onClearSelection}
-          className="ml-auto text-xs text-blue-500 hover:text-blue-700"
+          className="ml-auto text-xs text-brand-teal hover:text-brand-teal"
         >
           Clear selection
         </button>

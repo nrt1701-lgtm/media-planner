@@ -34,8 +34,8 @@ function formatCurrency(n: number) {
 }
 
 const DEFAULT_COLORS = [
-  '#4F46E5', '#0EA5E9', '#10B981', '#F59E0B', '#EF4444',
-  '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#6366F1',
+  '#1A8A7D', '#C45A2C', '#D4A34A', '#7A94A8', '#4A3728',
+  '#2CB5A5', '#D97B56', '#E0BD6E', '#95AEC0', '#6B5444',
 ]
 
 export function BudgetByChannelChart({ tactics, channels }: BudgetByChannelChartProps) {
@@ -59,7 +59,7 @@ export function BudgetByChannelChart({ tactics, channels }: BudgetByChannelChart
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-40 text-sm text-gray-400">
+      <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
         No channel data yet
       </div>
     )
@@ -72,11 +72,11 @@ export function BudgetByChannelChart({ tactics, channels }: BudgetByChannelChart
         layout="vertical"
         margin={{ top: 4, right: 16, left: 8, bottom: 4 }}
       >
-        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#E5E7EB" />
+        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#EDE6D8" />
         <XAxis
           type="number"
           tickFormatter={formatCurrency}
-          tick={{ fontSize: 11, fill: '#6B7280' }}
+          tick={{ fontSize: 11, fill: '#7A94A8' }}
           axisLine={false}
           tickLine={false}
         />
@@ -84,7 +84,7 @@ export function BudgetByChannelChart({ tactics, channels }: BudgetByChannelChart
           type="category"
           dataKey="name"
           width={100}
-          tick={{ fontSize: 12, fill: '#374151' }}
+          tick={{ fontSize: 12, fill: '#4A3728' }}
           axisLine={false}
           tickLine={false}
         />
@@ -99,7 +99,7 @@ export function BudgetByChannelChart({ tactics, channels }: BudgetByChannelChart
               : value
           }
           contentStyle={{
-            border: '1px solid #E5E7EB',
+            border: '1px solid #EDE6D8',
             borderRadius: '6px',
             fontSize: 12,
           }}

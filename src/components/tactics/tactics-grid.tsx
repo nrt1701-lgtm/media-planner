@@ -266,7 +266,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
       <div className="flex-1 overflow-auto">
         {tactics.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center">
-            <p className="text-gray-500 text-sm mb-4">
+            <p className="text-muted-foreground text-sm mb-4">
               No tactics yet — click &lsquo;Add Tactic&rsquo; to start building your plan
             </p>
             <Button onClick={addTactic} disabled={adding} size="sm" className="gap-1.5">
@@ -277,7 +277,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
         ) : (
           <Table>
             <TableHeader>
-              <TableRow className="bg-gray-50/80 hover:bg-gray-50/80">
+              <TableRow className="bg-muted hover:bg-muted">
                 <TableHead className="w-8 pr-0">
                   <Checkbox
                     checked={allSelected}
@@ -334,13 +334,13 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
 
       {/* Add button (when tactics exist) */}
       {tactics.length > 0 && (
-        <div className="px-4 py-2 border-t border-gray-200">
+        <div className="px-4 py-2 border-t border-border">
           <Button
             variant="ghost"
             size="sm"
             onClick={addTactic}
             disabled={adding}
-            className="gap-1.5 text-gray-600 hover:text-gray-900"
+            className="gap-1.5 text-muted-foreground hover:text-foreground"
           >
             <PlusIcon className="size-4" />
             {adding ? 'Adding...' : 'Add Tactic'}

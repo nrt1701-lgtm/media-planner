@@ -7,13 +7,13 @@ import { SidebarClientList } from './sidebar-client-list'
 
 export function Sidebar() {
   return (
-    <aside className="flex flex-col w-[280px] min-w-[280px] h-screen bg-white border-r border-gray-200 shadow-sm">
+    <aside className="flex flex-col w-[280px] min-w-[280px] h-screen bg-sidebar border-r border-sidebar-border shadow-sm">
       {/* Logo / App name */}
-      <div className="flex items-center gap-2 px-5 py-4 border-b border-gray-200">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-blue-600">
+      <div className="flex items-center gap-2 px-5 py-4 border-b border-sidebar-border">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-teal">
           <LayoutGrid className="w-4 h-4 text-white" />
         </div>
-        <span className="text-base font-semibold text-gray-900 tracking-tight">
+        <span className="text-base font-semibold text-sidebar-foreground tracking-tight">
           Media Planner
         </span>
       </div>
@@ -24,26 +24,26 @@ export function Sidebar() {
       </div>
 
       {/* Footer links */}
-      <div className="border-t border-gray-200">
+      <div className="border-t border-sidebar-border">
         <Separator />
         <nav className="flex flex-col gap-0.5 p-2">
           <Link
             href="/settings"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
           >
             <Settings className="w-4 h-4 flex-shrink-0" />
             Settings
           </Link>
           <Link
             href="/ad-specs"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
           >
             <FileText className="w-4 h-4 flex-shrink-0" />
             Ad Spec Library
           </Link>
           <Link
             href="/utm-templates"
-            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:text-sidebar-foreground hover:bg-sidebar-accent transition-colors"
           >
             <Link2 className="w-4 h-4 flex-shrink-0" />
             UTM Templates

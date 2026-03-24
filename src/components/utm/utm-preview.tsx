@@ -55,8 +55,8 @@ export function UtmPreview({
   const preview = `https://example.com/landing-page${utmString}`
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+    <div className="rounded-lg border border-border bg-muted p-4">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
         Live Preview
       </p>
 
@@ -69,20 +69,20 @@ export function UtmPreview({
           ...(term ? [{ label: 'utm_term', value: term }] : []),
         ].map(({ label, value }) => (
           <div key={label} className="flex gap-2 text-xs">
-            <span className="font-mono text-gray-500 w-32 flex-shrink-0">{label}:</span>
-            <span className="font-mono text-blue-700 break-all">{value || <em className="text-gray-400 not-italic">empty</em>}</span>
+            <span className="font-mono text-muted-foreground w-32 flex-shrink-0">{label}:</span>
+            <span className="font-mono text-brand-teal break-all">{value || <em className="text-muted-foreground not-italic">empty</em>}</span>
           </div>
         ))}
       </div>
 
-      <div className="mt-3 pt-3 border-t border-gray-200">
-        <p className="text-xs text-gray-500 mb-1 font-medium">Full URL:</p>
-        <p className="text-xs font-mono text-gray-700 break-all bg-white rounded border border-gray-200 px-2 py-1.5">
+      <div className="mt-3 pt-3 border-t border-border">
+        <p className="text-xs text-muted-foreground mb-1 font-medium">Full URL:</p>
+        <p className="text-xs font-mono text-foreground break-all bg-background rounded border border-border px-2 py-1.5">
           {preview}
         </p>
       </div>
 
-      <p className="text-xs text-gray-400 mt-2">
+      <p className="text-xs text-muted-foreground mt-2">
         Sample values used for preview. Actual values populate at export time.
       </p>
     </div>

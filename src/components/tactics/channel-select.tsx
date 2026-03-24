@@ -48,9 +48,9 @@ export const ChannelSelect = forwardRef<CellHandle, ChannelSelectProps>(function
             else onTab?.()
           }
         }}
-        className="h-7 w-full min-w-[100px] border-transparent bg-transparent hover:bg-blue-50 hover:border-blue-200 text-sm px-1.5 focus:ring-2 focus:ring-blue-200"
+        className="h-7 w-full min-w-[100px] border-transparent bg-transparent hover:bg-brand-teal/10 hover:border-brand-teal/30 text-sm px-1.5 focus:ring-2 focus:ring-brand-teal/30"
       >
-        <SelectValue placeholder={<span className="text-gray-400">—</span>} />
+        <SelectValue placeholder={<span className="text-muted-foreground">—</span>} />
       </SelectTrigger>
       <SelectContent>
         {channels.map((ch: Channel) => (

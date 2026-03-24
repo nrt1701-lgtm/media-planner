@@ -19,8 +19,8 @@ interface PlatformPieChartProps {
 }
 
 const COLORS = [
-  '#4F46E5', '#0EA5E9', '#10B981', '#F59E0B', '#EF4444',
-  '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#6366F1',
+  '#1A8A7D', '#C45A2C', '#D4A34A', '#7A94A8', '#4A3728',
+  '#2CB5A5', '#D97B56', '#E0BD6E', '#95AEC0', '#6B5444',
 ]
 
 export function PlatformPieChart({ tactics }: PlatformPieChartProps) {
@@ -37,7 +37,7 @@ export function PlatformPieChart({ tactics }: PlatformPieChartProps) {
 
   if (data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-40 text-sm text-gray-400">
+      <div className="flex items-center justify-center h-40 text-sm text-muted-foreground">
         No platform data yet
       </div>
     )
@@ -70,7 +70,7 @@ export function PlatformPieChart({ tactics }: PlatformPieChartProps) {
               : value
           }
           contentStyle={{
-            border: '1px solid #E5E7EB',
+            border: '1px solid #EDE6D8',
             borderRadius: '6px',
             fontSize: 12,
           }}
@@ -78,7 +78,7 @@ export function PlatformPieChart({ tactics }: PlatformPieChartProps) {
         <Legend
           iconType="circle"
           iconSize={8}
-          wrapperStyle={{ fontSize: 12, color: '#374151' }}
+          wrapperStyle={{ fontSize: 12, color: '#4A3728' }}
         />
       </PieChart>
     </ResponsiveContainer>

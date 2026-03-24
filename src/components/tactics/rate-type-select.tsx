@@ -42,7 +42,7 @@ export const RateTypeSelect = forwardRef<CellHandle, RateTypeSelectProps>(functi
             else onTab?.()
           }
         }}
-        className="h-7 w-full border-transparent bg-transparent hover:bg-blue-50 hover:border-blue-200 text-sm px-1.5 focus:ring-2 focus:ring-blue-200"
+        className="h-7 w-full border-transparent bg-transparent hover:bg-brand-teal/10 hover:border-brand-teal/30 text-sm px-1.5 focus:ring-2 focus:ring-brand-teal/30"
       >
         <SelectValue />
       </SelectTrigger>

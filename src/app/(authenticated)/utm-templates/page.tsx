@@ -49,9 +49,9 @@ export default function UtmTemplatesPage() {
   return (
     <div className="flex h-full">
       {/* Sidebar list */}
-      <div className="w-64 flex-shrink-0 border-r border-gray-200 bg-white flex flex-col">
-        <div className="p-4 border-b border-gray-200">
-          <h2 className="text-sm font-semibold text-gray-900">UTM Templates</h2>
+      <div className="w-64 flex-shrink-0 border-r border-border bg-card flex flex-col">
+        <div className="p-4 border-b border-border">
+          <h2 className="text-sm font-semibold text-foreground">UTM Templates</h2>
         </div>
 
         <div className="flex-1 overflow-y-auto p-2">
@@ -62,7 +62,7 @@ export default function UtmTemplatesPage() {
               ))}
             </div>
           ) : list.length === 0 ? (
-            <p className="text-xs text-gray-400 px-3 py-4">No templates yet.</p>
+            <p className="text-xs text-muted-foreground px-3 py-4">No templates yet.</p>
           ) : (
             list.map((t) => (
               <button
@@ -71,8 +71,8 @@ export default function UtmTemplatesPage() {
                 className={cn(
                   'w-full text-left px-3 py-2 rounded-md text-sm transition-colors',
                   selected?.id === t.id
-                    ? 'bg-blue-50 text-blue-700 font-medium'
-                    : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-brand-teal/10 text-brand-teal font-medium'
+                    : 'text-foreground hover:bg-muted'
                 )}
               >
                 {t.name}
@@ -81,7 +81,7 @@ export default function UtmTemplatesPage() {
           )}
         </div>
 
-        <div className="p-3 border-t border-gray-200">
+        <div className="p-3 border-t border-border">
           <Button
             variant="outline"
             size="sm"
@@ -99,8 +99,8 @@ export default function UtmTemplatesPage() {
         {creating ? (
           <div>
             <div className="mb-6">
-              <h1 className="text-xl font-bold text-gray-900">New UTM Template</h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <h1 className="text-xl font-bold text-foreground">New UTM Template</h1>
+              <p className="text-sm text-muted-foreground mt-1">
                 Define patterns for auto-generating UTM parameters.
               </p>
             </div>
@@ -109,8 +109,8 @@ export default function UtmTemplatesPage() {
         ) : selected ? (
           <div>
             <div className="mb-6">
-              <h1 className="text-xl font-bold text-gray-900">{selected.name}</h1>
-              <p className="text-sm text-gray-500 mt-1">
+              <h1 className="text-xl font-bold text-foreground">{selected.name}</h1>
+              <p className="text-sm text-muted-foreground mt-1">
                 Edit this template&apos;s UTM patterns.
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function UtmTemplatesPage() {
         ) : (
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Select a template to edit, or create a new one.
               </p>
               <Button onClick={handleCreate} variant="outline">

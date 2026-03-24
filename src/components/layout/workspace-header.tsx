@@ -80,30 +80,30 @@ export function WorkspaceHeader({ campaign, allocatedBudget, onStatusChange }: W
   }
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
+    <header className="bg-card border-b border-border px-6 py-4">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-1.5 text-sm text-gray-500 mb-2">
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
         {campaign.client && (
           <>
-            <span className="text-gray-600 font-medium">{campaign.client.name}</span>
+            <span className="text-muted-foreground font-medium">{campaign.client.name}</span>
             <ChevronRight className="w-3.5 h-3.5 flex-shrink-0" />
           </>
         )}
-        <span className="text-gray-900 font-semibold">{campaign.name}</span>
+        <span className="text-foreground font-semibold">{campaign.name}</span>
       </div>
 
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-3">
         {/* Workamajig code */}
         {campaign.workamajig_code && (
-          <Badge variant="outline" className="font-mono text-xs text-gray-600 border-gray-300">
+          <Badge variant="outline" className="font-mono text-xs text-muted-foreground border-border">
             {campaign.workamajig_code}
           </Badge>
         )}
 
         {/* Flight dates */}
         {campaign.start_date && campaign.end_date && (
-          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Calendar className="w-3.5 h-3.5 flex-shrink-0" />
             <span>
               {formatDate(campaign.start_date)} – {formatDate(campaign.end_date)}
@@ -112,13 +112,13 @@ export function WorkspaceHeader({ campaign, allocatedBudget, onStatusChange }: W
         )}
 
         {/* Budget */}
-        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <span>Budget:</span>
           <span className={budgetColorClass}>
             {formatCurrency(allocatedBudget)}
           </span>
           <span>/</span>
-          <span className="text-gray-700 font-medium">{formatCurrency(campaign.total_budget)}</span>
+          <span className="text-foreground font-medium">{formatCurrency(campaign.total_budget)}</span>
           {isOverBudget && (
             <Badge variant="outline" className="ml-1 text-xs border-amber-300 bg-amber-50 text-amber-700">
               Over Budget

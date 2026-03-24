@@ -108,9 +108,9 @@ export function CreateCampaignDialog({
             />
           </div>
           {workamajigCode && (
-            <div className="rounded-md bg-blue-50 border border-blue-200 px-3 py-2">
-              <p className="text-xs text-blue-600 font-medium">Workamajig Code Preview</p>
-              <p className="text-sm font-mono font-semibold text-blue-800 mt-0.5">{workamajigCode}</p>
+            <div className="rounded-md bg-brand-teal/10 border border-brand-teal/30 px-3 py-2">
+              <p className="text-xs text-brand-teal font-medium">Workamajig Code Preview</p>
+              <p className="text-sm font-mono font-semibold text-brand-teal mt-0.5">{workamajigCode}</p>
             </div>
           )}
           <div className="grid grid-cols-2 gap-3">

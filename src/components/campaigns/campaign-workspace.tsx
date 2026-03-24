@@ -27,7 +27,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   if (campaignLoading) {
     return (
       <div className="flex flex-col h-full">
-        <div className="bg-white border-b border-gray-200 px-6 py-4 space-y-2">
+        <div className="bg-card border-b border-border px-6 py-4 space-y-2">
           <Skeleton className="h-5 w-48" />
           <Skeleton className="h-4 w-72" />
         </div>
@@ -42,7 +42,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   if (campaignError || !campaign) {
     return (
       <div className="flex items-center justify-center h-full">
-        <p className="text-sm text-gray-500">Campaign not found.</p>
+        <p className="text-sm text-muted-foreground">Campaign not found.</p>
       </div>
     )
   }

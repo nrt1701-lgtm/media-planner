@@ -20,8 +20,8 @@ export function UtmVariablePicker() {
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
+    <div className="rounded-lg border border-border bg-muted p-4">
+      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
         Available Variables
       </p>
       <div className="space-y-1.5">
@@ -32,15 +32,15 @@ export function UtmVariablePicker() {
             onClick={() => copyToken(token)}
             className="flex items-center gap-2 w-full text-left rounded px-2 py-1.5 hover:bg-white hover:shadow-sm transition-all group"
           >
-            <code className="text-xs font-mono text-blue-700 bg-blue-50 px-1.5 py-0.5 rounded flex-shrink-0">
+            <code className="text-xs font-mono text-brand-teal bg-brand-teal/10 px-1.5 py-0.5 rounded flex-shrink-0">
               {token}
             </code>
-            <span className="text-xs text-gray-500 flex-1 min-w-0 truncate">{description}</span>
-            <Copy className="w-3 h-3 text-gray-400 opacity-0 group-hover:opacity-100 flex-shrink-0" />
+            <span className="text-xs text-muted-foreground flex-1 min-w-0 truncate">{description}</span>
+            <Copy className="w-3 h-3 text-muted-foreground opacity-0 group-hover:opacity-100 flex-shrink-0" />
           </button>
         ))}
       </div>
-      <p className="text-xs text-gray-400 mt-3">Click a variable to copy it to clipboard.</p>
+      <p className="text-xs text-muted-foreground mt-3">Click a variable to copy it to clipboard.</p>
     </div>
   )
 }

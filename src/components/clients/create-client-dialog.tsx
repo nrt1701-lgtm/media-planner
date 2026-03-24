@@ -85,7 +85,7 @@ export function CreateClientDialog({ open, onOpenChange, onSuccess }: CreateClie
               maxLength={10}
               required
             />
-            <p className="text-xs text-gray-500">Short code used in Workamajig (max 10 chars)</p>
+            <p className="text-xs text-muted-foreground">Short code used in Workamajig (max 10 chars)</p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="client-industry">Industry</Label>

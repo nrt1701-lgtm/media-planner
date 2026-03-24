@@ -44,7 +44,7 @@ export function BudgetSummary({ tactics, campaign }: BudgetSummaryProps) {
         {/* Budget by Channel */}
         <Card className="lg:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-700">
+            <CardTitle className="text-sm font-medium text-foreground">
               Budget by Channel
             </CardTitle>
           </CardHeader>
@@ -56,7 +56,7 @@ export function BudgetSummary({ tactics, campaign }: BudgetSummaryProps) {
         {/* Platform Breakdown */}
         <Card className="lg:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-700">
+            <CardTitle className="text-sm font-medium text-foreground">
               Budget by Platform
             </CardTitle>
           </CardHeader>
@@ -68,7 +68,7 @@ export function BudgetSummary({ tactics, campaign }: BudgetSummaryProps) {
         {/* Spend Timeline */}
         <Card className="lg:col-span-1">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-gray-700">
+            <CardTitle className="text-sm font-medium text-foreground">
               Spend Timeline
             </CardTitle>
           </CardHeader>
@@ -81,7 +81,7 @@ export function BudgetSummary({ tactics, campaign }: BudgetSummaryProps) {
       {/* Full-width table */}
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-gray-700">
+          <CardTitle className="text-sm font-medium text-foreground">
             Tactic Budget Breakdown
           </CardTitle>
         </CardHeader>

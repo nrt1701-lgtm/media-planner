@@ -26,14 +26,14 @@ export function LogoUpload({ value, onChange }: LogoUploadProps) {
           <img
             src={value}
             alt="Agency logo preview"
-            className="h-16 w-auto max-w-xs rounded border border-gray-200 object-contain p-1"
+            className="h-16 w-auto max-w-xs rounded border border-border object-contain p-1"
             onError={(e) => {
               (e.currentTarget as HTMLImageElement).style.display = 'none'
             }}
           />
         </div>
       )}
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted-foreground">
         Enter a URL to your agency logo. It will appear on generated IO PDFs.
       </p>
     </div>
