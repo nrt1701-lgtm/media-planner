@@ -6,7 +6,7 @@ import { WorkspaceHeader } from '@/components/layout/workspace-header'
 import { WorkspaceTabs } from '@/components/layout/workspace-tabs'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TacticsGrid } from '@/components/tactics/tactics-grid'
-import { AudienceForm } from '@/components/audience/audience-form'
+import { AudienceList } from '@/components/audience/audience-list'
 import { BudgetSummary } from '@/components/budget/budget-summary'
 import { DocumentHub } from '@/components/documents/document-hub'
 import type { CampaignStatus } from '@/lib/constants'
@@ -58,7 +58,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
     />
   )
 
-  const audienceContent = <AudienceForm campaignId={campaignId} />
+  const audienceContent = <AudienceList campaignId={campaignId} />
 
   const budgetContent = (
     <BudgetSummary

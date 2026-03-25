@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { useTactics } from '@/hooks/use-tactics'
 import { useAdSpecs } from '@/hooks/use-ad-specs'
+import { useAudiences } from '@/hooks/use-audiences'
 import {
   Table,
   TableBody,
@@ -34,6 +35,7 @@ interface Tactic {
   rate?: number | null
   est_impressions?: number | null
   landing_page_url?: string | null
+  audience_id?: string | null
   sort_order?: number
 }
 
@@ -45,6 +47,7 @@ interface TacticsGridProps {
 export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
   const { tactics, isLoading, mutate } = useTactics(campaignId)
   const { adSpecs } = useAdSpecs()
+  const { audiences } = useAudiences(campaignId)
 
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [dragOverId, setDragOverId] = useState<string | null>(null)
@@ -309,6 +312,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                 <TableHead className="min-w-[110px]">Platform</TableHead>
                 <TableHead className="min-w-[110px]">Channel</TableHead>
                 <TableHead className="min-w-[140px]">Name</TableHead>
+                <TableHead className="min-w-[130px]">Audience</TableHead>
                 <TableHead className="min-w-[110px]">Placement</TableHead>
                 <TableHead className="min-w-[120px]">Format(s)</TableHead>
                 <TableHead className="min-w-[110px]">Flight Start</TableHead>
@@ -327,6 +331,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                   key={tactic.id}
                   tactic={tactic}
                   adSpecs={adSpecs}
+                  audiences={audiences}
                   campaignId={campaignId}
                   isSelected={selectedIds.has(tactic.id)}
                   isDragOver={dragOverId === tactic.id}

@@ -23,13 +23,15 @@ import { Button } from '@/components/ui/button'
 import { InlineCell, type CellHandle } from './inline-cell'
 import { ChannelSelect } from './channel-select'
 import { RateTypeSelect } from './rate-type-select'
+import { AudienceSelect } from './audience-select'
+import type { Audience } from '@/hooks/use-audiences'
 import { AdSpecPicker } from './ad-spec-picker'
 import { GripVerticalIcon, MoreHorizontalIcon, CopyIcon, Trash2Icon } from 'lucide-react'
 import { type RateType } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
 
 const TAB_ORDER = [
-  'platform', 'channel', 'name', 'placement',
+  'platform', 'channel', 'name', 'audience_id', 'placement',
   'flight_start', 'flight_end', 'budget', 'rate_type', 'rate',
   'landing_page_url',
 ] as const
@@ -53,12 +55,14 @@ interface Tactic {
   rate?: number | null
   est_impressions?: number | null
   landing_page_url?: string | null
+  audience_id?: string | null
   sort_order?: number
 }
 
 interface TacticRowProps {
   tactic: Tactic
   adSpecs: AdSpec[]
+  audiences: Audience[]
   campaignId: string
   isSelected: boolean
   isDragOver: boolean
@@ -96,6 +100,7 @@ function formatImpressions(n: number | null | undefined) {
 export function TacticRow({
   tactic,
   adSpecs,
+  audiences,
   campaignId,
   isSelected,
   isDragOver,
@@ -220,6 +225,18 @@ export function TacticRow({
             onSave={(v) => patch({ name: v })}
             onTab={() => focusCell('name', 1)}
             onShiftTab={() => focusCell('name', -1)}
+          />
+        </TableCell>
+
+        {/* Audience */}
+        <TableCell className="min-w-[130px]">
+          <AudienceSelect
+            ref={(h) => { cellRefs.current.audience_id = h }}
+            audiences={audiences}
+            value={tactic.audience_id}
+            onSave={(v) => patch({ audience_id: v })}
+            onTab={() => focusCell('audience_id', 1)}
+            onShiftTab={() => focusCell('audience_id', -1)}
           />
         </TableCell>
 

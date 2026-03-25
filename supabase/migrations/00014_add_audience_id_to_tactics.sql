@@ -1,0 +1,2 @@
+ALTER TABLE tactics
+  ADD COLUMN audience_id UUID REFERENCES audiences(id) ON DELETE SET NULL;
