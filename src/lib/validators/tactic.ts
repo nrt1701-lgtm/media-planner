@@ -14,7 +14,7 @@ export const createTacticSchema = z.object({
   rate: z.number().min(0).default(0),
   est_impressions: z.number().optional().nullable(),
   landing_page_url: z.string().url().optional().or(z.literal('')).nullable(),
-  audience_notes: z.string().optional(),
+  audience_id: z.string().uuid().optional().nullable(),
   sort_order: z.number().int().default(0),
 })
 
