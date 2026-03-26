@@ -1,3 +1,4 @@
+// .tsx extension required — @react-pdf/renderer uses JSX (<Document>, <Page>, etc.)
 import type { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { renderToBuffer, Document } from '@react-pdf/renderer'

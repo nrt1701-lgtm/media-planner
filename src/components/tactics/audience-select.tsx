@@ -29,8 +29,8 @@ export const AudienceSelect = forwardRef<CellHandle, AudienceSelectProps>(
 
     return (
       <Select
-        value={value ?? ''}
-        onValueChange={(v) => onSave(v === '' ? null : v)}
+        value={value ?? '__none__'}
+        onValueChange={(v) => onSave(v === '__none__' ? null : v)}
       >
         <SelectTrigger
           ref={triggerRef}
@@ -46,7 +46,7 @@ export const AudienceSelect = forwardRef<CellHandle, AudienceSelectProps>(
           <SelectValue placeholder="— None —" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">— None —</SelectItem>
+          <SelectItem value="__none__">— None —</SelectItem>
           {audiences.map((a) => (
             <SelectItem key={a.id} value={a.id}>
               {a.name}

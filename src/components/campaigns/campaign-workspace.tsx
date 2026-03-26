@@ -54,7 +54,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   const tacticsContent = (
     <TacticsGrid
       campaignId={campaignId}
-      campaignBudget={campaign.budget ?? 0}
+      campaignBudget={campaign.total_budget ?? 0}
     />
   )
 

@@ -77,14 +77,14 @@ Params are `Promise<{...}>` in Next.js 16 — always `await params`.
 | Table | Purpose | Key columns |
 |-------|---------|-------------|
 | `clients` | Advertiser accounts | `name`, `client_code`, `industry`, `deleted_at` |
-| `campaigns` | Campaign records | `client_id`, `name`, `budget`, `start_date`, `end_date`, `status`, `workamajig_code`, `expense_number` |
-| `media_plans` | 1:1 with campaigns, auto-created | `campaign_id`, `audience_strategy` (JSONB), `notes`, `prepared_by` |
-| `tactics` | Line items in a plan | `plan_id`, `channel`, `platform`, `placement`, `budget`, `rate_type`, `rate`, `est_impressions`, `audience_id` |
+| `campaigns` | Campaign records | `client_id`, `name`, `total_budget`, `start_date`, `end_date`, `status`, `workamajig_code`, `expense_number` |
+| `media_plans` | 1:1 with campaigns, auto-created | `campaign_id`, `audience_strategy` (JSONB), `notes`, `prepared_by`, `io_last_generated_at`, `creative_specs_last_generated_at`, `utm_sheet_last_generated_at` |
+| `tactics` | Line items in a plan | `plan_id`, `channel`, `platform`, `placement`, `budget`, `rate_type`, `rate`, `est_impressions`, `audience_id`, `audience_notes`, `ad_spec_ids` (UUID[]) |
 | `audiences` | Named audience segments | `campaign_id`, `name`, `audience_strategy` (JSONB), `sort_order` |
-| `ad_spec_library` | Ad format specs | `channel`, `platform`, `name`, `dimensions`, `file_types`, `max_file_size_kb`, `notes` |
-| `utm_templates` | Reusable UTM patterns | `name`, `template` (string with `{{variables}}`), `is_default` |
-| `agency_settings` | Singleton config | `agency_name`, `io_terms`, `creative_lead_time_days`, `default_utm_template_id` |
-| `channels` | Channel reference | `name` (10 defaults: Programmatic Display, Paid Social, etc.) |
+| `ad_spec_library` | Ad format specs | `platform`, `placement`, `format_name`, `dimensions`, `file_types`, `max_file_size`, `duration_limits`, `char_limits` (JSONB), `notes` |
+| `utm_templates` | Per-client UTM patterns | `client_id` (nullable = global), `name`, `source_pattern`, `medium_pattern`, `campaign_pattern`, `content_pattern`, `term_pattern` |
+| `agency_settings` | Singleton config | `agency_name`, `agency_logo_url`, `io_terms_template`, `creative_lead_time_days`, `default_utm_template_id` |
+| `channels` | Channel reference | `name`, `color`, `sort_order` (10 defaults: Programmatic Display, Paid Social, etc.) |
 
 Campaign status flow: `draft → planning → approved → active → completed`
 
