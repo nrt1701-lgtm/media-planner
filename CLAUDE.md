@@ -140,9 +140,10 @@ import { Dialog as DialogPrimitive } from "radix-ui"
 // import { DialogRoot } from "@radix-ui/react-dialog"
 ```
 
-### Table name gotcha
-The ad spec table is `ad_spec_library` — **not** `ad_specs`. Supabase queries using `ad_specs`
-return 404 silently.
+### Table name gotchas
+Two tables have non-obvious names — always use these exact strings in `.from()`:
+- Ad specs: `ad_spec_library` (not `ad_specs`)
+- Agency config: `agency_settings` (not `settings`)
 
 ---
 

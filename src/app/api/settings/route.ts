@@ -6,7 +6,7 @@ export async function GET() {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .from('settings')
+    .from('agency_settings')
     .select('*')
     .single()
 
@@ -25,14 +25,14 @@ export async function PATCH(request: NextRequest) {
 
   // Fetch current settings to get the id
   const { data: existing, error: fetchError } = await supabase
-    .from('settings')
+    .from('agency_settings')
     .select('id')
     .single()
 
   if (fetchError) return Response.json({ error: fetchError.message }, { status: 500 })
 
   const { data, error } = await supabase
-    .from('settings')
+    .from('agency_settings')
     .update(parsed.data)
     .eq('id', existing.id)
     .select()

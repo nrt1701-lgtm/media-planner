@@ -59,7 +59,7 @@ export async function POST(
 
   if (allSpecIds.length > 0) {
     const { data: specs } = await supabase
-      .from('ad_specs')
+      .from('ad_spec_library')
       .select('*')
       .in('id', allSpecIds)
 
@@ -68,7 +68,7 @@ export async function POST(
 
   // 5. Fetch agency settings for creative lead time
   const { data: settings } = await supabase
-    .from('settings')
+    .from('agency_settings')
     .select('creative_lead_time_days')
     .single()
 

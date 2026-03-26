@@ -47,7 +47,7 @@ export async function POST(
 
   // 4. Fetch agency settings
   const { data: settings } = await supabase
-    .from('settings')
+    .from('agency_settings')
     .select('agency_logo_url, io_terms_template')
     .single()
 
