@@ -16,7 +16,13 @@ export async function PATCH(
     return Response.json({ error: parsed.error.flatten() }, { status: 400 })
   }
 
-  const updateData = { ...parsed.data }
+  // Strip undefined values so Supabase only updates the columns that were
+  // explicitly included in the PATCH body. If undefined keys were forwarded,
+  // some Supabase client versions convert them to NULL, which would wipe
+  // numeric NOT NULL columns (budget, rate, sort_order) back to their defaults.
+  const updateData = Object.fromEntries(
+    Object.entries(parsed.data).filter(([, v]) => v !== undefined)
+  ) as typeof parsed.data
 
   // Recalculate impressions if rate_type, budget, or rate changed
   const impressionFields = ['rate_type', 'budget', 'rate']

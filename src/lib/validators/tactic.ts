@@ -19,4 +19,26 @@ export const createTacticSchema = z.object({
   sort_order: z.number().int().default(0),
 })
 
-export const updateTacticSchema = createTacticSchema.partial()
+// Explicitly define the update schema WITHOUT defaults so that fields absent
+// from the PATCH body are undefined (and therefore excluded from Supabase's
+// update query). Using createTacticSchema.partial() is unsafe because Zod's
+// .partial() may still apply .default() values for absent fields, which would
+// silently zero-out columns like `budget` and `rate` whenever only a subset
+// of fields (e.g. rate_type) is patched.
+export const updateTacticSchema = z.object({
+  name: z.string().optional(),
+  channel: z.string().optional(),
+  platform: z.string().optional(),
+  placement: z.string().optional(),
+  ad_spec_ids: z.array(z.string().uuid()).optional(),
+  flight_start: z.string().optional(),
+  flight_end: z.string().optional(),
+  budget: z.number().min(0).optional(),
+  rate_type: z.enum(RATE_TYPES).optional(),
+  rate: z.number().min(0).optional(),
+  est_impressions: z.number().optional().nullable(),
+  landing_page_url: z.string().url().optional().or(z.literal('')).nullable(),
+  audience_notes: z.string().optional().nullable(),
+  audience_id: z.string().uuid().optional().nullable(),
+  sort_order: z.number().int().optional(),
+})
