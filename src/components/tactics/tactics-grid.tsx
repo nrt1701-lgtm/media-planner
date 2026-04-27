@@ -17,7 +17,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { TacticRow } from './tactic-row'
 import { BudgetFooter } from './budget-footer'
 import { BulkActionsBar } from './bulk-actions-bar'
-import { PlusIcon } from 'lucide-react'
+import { CsvUploadDialog } from './csv-upload-dialog'
+import { PlusIcon, UploadIcon } from 'lucide-react'
 import type { RateType } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
 
@@ -53,6 +54,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
   const [dragOverId, setDragOverId] = useState<string | null>(null)
   const [dragSourceId, setDragSourceId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
+  const [csvOpen, setCsvOpen] = useState(false)
 
   const allocatedBudget = tactics.reduce((sum: number, t: Tactic) => sum + (t.budget ?? 0), 0)
 
@@ -285,10 +287,21 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
             <p className="text-muted-foreground text-sm mb-4">
               No tactics yet — click &lsquo;Add Tactic&rsquo; to start building your plan
             </p>
-            <Button onClick={addTactic} disabled={adding} size="sm" className="gap-1.5">
-              <PlusIcon className="size-4" />
-              {adding ? 'Adding...' : 'Add Tactic'}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button onClick={addTactic} disabled={adding} size="sm" className="gap-1.5">
+                <PlusIcon className="size-4" />
+                {adding ? 'Adding...' : 'Add Tactic'}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCsvOpen(true)}
+                className="gap-1.5"
+              >
+                <UploadIcon className="size-4" />
+                Import CSV
+              </Button>
+            </div>
           </div>
         ) : (
           <Table>
@@ -350,9 +363,9 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
         )}
       </div>
 
-      {/* Add button (when tactics exist) */}
+      {/* Add / Import buttons (when tactics exist) */}
       {tactics.length > 0 && (
-        <div className="px-4 py-2 border-t border-border">
+        <div className="flex items-center gap-2 px-4 py-2 border-t border-border">
           <Button
             variant="ghost"
             size="sm"
@@ -363,11 +376,28 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
             <PlusIcon className="size-4" />
             {adding ? 'Adding...' : 'Add Tactic'}
           </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setCsvOpen(true)}
+            className="gap-1.5 text-muted-foreground hover:text-foreground"
+          >
+            <UploadIcon className="size-4" />
+            Import CSV
+          </Button>
         </div>
       )}
 
       {/* Budget footer */}
       <BudgetFooter allocated={allocatedBudget} total={campaignBudget} />
+
+      {/* CSV upload dialog */}
+      <CsvUploadDialog
+        open={csvOpen}
+        onOpenChange={setCsvOpen}
+        campaignId={campaignId}
+        onSuccess={() => mutate()}
+      />
     </div>
   )
 }
