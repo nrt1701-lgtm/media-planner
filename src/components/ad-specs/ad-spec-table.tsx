@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useAdSpecs } from '@/hooks/use-ad-specs'
 import { AdSpecFormDialog } from './ad-spec-form-dialog'
@@ -16,6 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Select,
   SelectContent,
@@ -30,7 +31,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Plus, MoreHorizontal, Search, Upload } from 'lucide-react'
+import { Plus, MoreHorizontal, Search, Upload, Download } from 'lucide-react'
+import { generateAdSpecsCsv } from '@/lib/csv/generate-ad-specs'
 
 interface AdSpec {
   id: string
@@ -51,6 +53,7 @@ export function AdSpecTable() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingSpec, setEditingSpec] = useState<AdSpec | null>(null)
   const [importOpen, setImportOpen] = useState(false)
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
 
   const { adSpecs, isLoading, mutate } = useAdSpecs(
     platformFilter !== 'all' ? platformFilter : undefined
@@ -69,6 +72,45 @@ export function AdSpecTable() {
   const platforms = Array.from(
     new Set((adSpecs as AdSpec[]).map((s) => s.platform))
   ).sort()
+
+  const allSelected = filtered.length > 0 && selectedIds.size === filtered.length
+  const someSelected = selectedIds.size > 0 && selectedIds.size < filtered.length
+
+  // Clear selection whenever the visible set changes
+  useEffect(() => {
+    setSelectedIds(new Set())
+  }, [search, platformFilter])
+
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  function toggleAll() {
+    if (allSelected) {
+      setSelectedIds(new Set())
+    } else {
+      setSelectedIds(new Set(filtered.map((s) => s.id)))
+    }
+  }
+
+  function handleExportCsv() {
+    const specs = selectedIds.size > 0
+      ? filtered.filter((s) => selectedIds.has(s.id))
+      : filtered
+    const csv = generateAdSpecsCsv(specs)
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `ad-specs${selectedIds.size > 0 ? '-selected' : ''}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
 
   async function handleDelete(id: string) {
     if (!confirm('Delete this ad spec?')) return
@@ -123,6 +165,16 @@ export function AdSpecTable() {
           <Upload className="w-4 h-4" />
           Import CSV
         </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleExportCsv}
+          disabled={filtered.length === 0}
+          className="flex items-center gap-1.5"
+        >
+          <Download className="w-4 h-4" />
+          {selectedIds.size > 0 ? `Export CSV (${selectedIds.size})` : 'Export CSV'}
+        </Button>
         <Button onClick={handleAdd} size="sm" className="flex items-center gap-1.5">
           <Plus className="w-4 h-4" />
           Add Spec
@@ -133,6 +185,19 @@ export function AdSpecTable() {
         <Table>
           <TableHeader>
             <TableRow className="bg-muted">
+              <TableHead className="w-8 pr-0">
+                <Checkbox
+                  checked={allSelected}
+                  ref={(el) => {
+                    if (el) {
+                      const input = (el as unknown as { querySelector: (s: string) => HTMLInputElement | null }).querySelector?.('input')
+                      if (input) input.indeterminate = someSelected
+                    }
+                  }}
+                  onCheckedChange={toggleAll}
+                  aria-label="Select all"
+                />
+              </TableHead>
               <TableHead className="text-xs font-semibold text-muted-foreground">Platform</TableHead>
               <TableHead className="text-xs font-semibold text-muted-foreground">Placement</TableHead>
               <TableHead className="text-xs font-semibold text-muted-foreground">Format</TableHead>
@@ -149,7 +214,7 @@ export function AdSpecTable() {
             {isLoading ? (
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                  {Array.from({ length: 10 }).map((_, j) => (
+                  {Array.from({ length: 11 }).map((_, j) => (
                     <TableCell key={j}>
                       <Skeleton className="h-4 w-full" />
                     </TableCell>
@@ -158,7 +223,7 @@ export function AdSpecTable() {
               ))
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={10} className="text-center text-sm text-muted-foreground py-10">
+                <TableCell colSpan={11} className="text-center text-sm text-muted-foreground py-10">
                   {search || platformFilter !== 'all'
                     ? 'No specs match your filters.'
                     : 'No ad specs yet. Click "Add Spec" to get started.'}
@@ -167,6 +232,14 @@ export function AdSpecTable() {
             ) : (
               filtered.map((spec) => (
                 <TableRow key={spec.id} className="hover:bg-muted/50">
+                  <TableCell className="pr-0">
+                    <Checkbox
+                      checked={selectedIds.has(spec.id)}
+                      onCheckedChange={() => toggleSelect(spec.id)}
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="Select row"
+                    />
+                  </TableCell>
                   <TableCell className="text-sm font-medium text-foreground">{spec.platform}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{spec.placement}</TableCell>
                   <TableCell className="text-sm text-muted-foreground">{spec.format_name}</TableCell>
