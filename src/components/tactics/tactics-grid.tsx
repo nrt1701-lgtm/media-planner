@@ -21,6 +21,7 @@ import { CsvUploadDialog } from './csv-upload-dialog'
 import { PlusIcon, UploadIcon } from 'lucide-react'
 import type { RateType, FunnelStage } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
+import type { CostView } from '@/components/budget/cost-view-toggle'
 
 interface Tactic {
   id: string
@@ -45,9 +46,10 @@ interface Tactic {
 interface TacticsGridProps {
   campaignId: string
   campaignBudget: number
+  markupPercentage?: number
 }
 
-export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
+export function TacticsGrid({ campaignId, campaignBudget, markupPercentage = 0 }: TacticsGridProps) {
   const { tactics, isLoading, mutate } = useTactics(campaignId)
   const { adSpecs } = useAdSpecs()
   const { audiences } = useAudiences(campaignId)
@@ -57,6 +59,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
   const [dragSourceId, setDragSourceId] = useState<string | null>(null)
   const [adding, setAdding] = useState(false)
   const [csvOpen, setCsvOpen] = useState(false)
+  const [costView, setCostView] = useState<CostView>('net')
 
   const allocatedBudget = tactics.reduce((sum: number, t: Tactic) => sum + (t.budget ?? 0), 0)
 
@@ -339,6 +342,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                 <TableHead className="min-w-[90px]">Rate</TableHead>
                 <TableHead className="min-w-[110px]">Est. Impr.</TableHead>
                 <TableHead className="min-w-[150px]">Landing Page</TableHead>
+                <TableHead className="min-w-[100px]">Gross Cost</TableHead>
                 <TableHead className="w-8" />
               </TableRow>
             </TableHeader>
@@ -350,6 +354,7 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                   adSpecs={adSpecs}
                   audiences={audiences}
                   campaignId={campaignId}
+                  markupPercentage={markupPercentage}
                   isSelected={selectedIds.has(tactic.id)}
                   isDragOver={dragOverId === tactic.id}
                   onToggleSelect={toggleSelect}
@@ -393,7 +398,13 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
       )}
 
       {/* Budget footer */}
-      <BudgetFooter allocated={allocatedBudget} total={campaignBudget} />
+      <BudgetFooter
+        allocated={allocatedBudget}
+        total={campaignBudget}
+        markupPercentage={markupPercentage}
+        costView={costView}
+        onCostViewChange={setCostView}
+      />
 
       {/* CSV upload dialog */}
       <CsvUploadDialog

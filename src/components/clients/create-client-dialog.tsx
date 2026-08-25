@@ -22,6 +22,7 @@ export function CreateClientDialog({ open, onOpenChange, onSuccess }: CreateClie
   const [name, setName] = useState('')
   const [clientCode, setClientCode] = useState('')
   const [industry, setIndustry] = useState('')
+  const [markupPercentage, setMarkupPercentage] = useState('0')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -38,6 +39,7 @@ export function CreateClientDialog({ open, onOpenChange, onSuccess }: CreateClie
           name,
           client_code: clientCode,
           industry: industry || undefined,
+          markup_percentage: markupPercentage === '' ? 0 : parseFloat(markupPercentage),
         }),
       })
 
@@ -49,6 +51,7 @@ export function CreateClientDialog({ open, onOpenChange, onSuccess }: CreateClie
       setName('')
       setClientCode('')
       setIndustry('')
+      setMarkupPercentage('0')
       onSuccess()
       onOpenChange(false)
     } catch (err) {
@@ -95,6 +98,21 @@ export function CreateClientDialog({ open, onOpenChange, onSuccess }: CreateClie
               onChange={(e) => setIndustry(e.target.value)}
               placeholder="Retail, Healthcare, Finance…"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="client-markup">Markup %</Label>
+            <Input
+              id="client-markup"
+              type="number"
+              min="0"
+              step="0.01"
+              value={markupPercentage}
+              onChange={(e) => setMarkupPercentage(e.target.value)}
+              placeholder="0"
+            />
+            <p className="text-xs text-muted-foreground">
+              Applied to net media cost for client-facing totals (Insertion Orders, Gross view)
+            </p>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <DialogFooter>

@@ -49,7 +49,7 @@ export function ReconciliationTab({ clientId }: ReconciliationTabProps) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Total Planned</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Total Planned (Net)</CardTitle>
           </CardHeader>
           <CardContent className="pt-0 text-2xl font-semibold text-foreground">
             {formatCurrency(totalPlanned)}
@@ -57,7 +57,7 @@ export function ReconciliationTab({ clientId }: ReconciliationTabProps) {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Actual to Date</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Actual to Date (Net)</CardTitle>
           </CardHeader>
           <CardContent className="pt-0 text-2xl font-semibold text-foreground">
             {formatCurrency(totalActual)}
@@ -65,7 +65,7 @@ export function ReconciliationTab({ clientId }: ReconciliationTabProps) {
         </Card>
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Remaining Needed</CardTitle>
+            <CardTitle className="text-sm font-medium text-foreground">Remaining Needed (Net)</CardTitle>
           </CardHeader>
           <CardContent className="pt-0 text-2xl font-semibold text-foreground">
             {formatCurrency(totalRemaining)}
@@ -75,7 +75,7 @@ export function ReconciliationTab({ clientId }: ReconciliationTabProps) {
 
       <Card>
         <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-medium text-foreground">Monthly Pacing by Platform</CardTitle>
+          <CardTitle className="text-sm font-medium text-foreground">Monthly Pacing by Platform (Net)</CardTitle>
         </CardHeader>
         <CardContent className="pt-0 px-0">
           <ReconciliationGrid grid={grid} onSaveActual={handleSaveActual} />
@@ -84,8 +84,10 @@ export function ReconciliationTab({ clientId }: ReconciliationTabProps) {
 
       <p className="text-xs text-muted-foreground">
         Includes budget across {campaigns.length} active/planning/approved campaign
-        {campaigns.length !== 1 ? 's' : ''} for this advertiser. Enter the actual invoiced amount for a
-        past month to recalculate the needed spend for the months remaining.
+        {campaigns.length !== 1 ? 's' : ''} for this advertiser. All figures are net vendor cost
+        (before client markup) so they can be reconciled directly against platform invoices. Enter
+        the actual invoiced amount for a past month to recalculate the needed spend for the months
+        remaining.
       </p>
     </div>
   )

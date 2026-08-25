@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { StatusBadge } from '@/components/campaigns/status-badge'
+import { CostViewToggle, type CostView } from '@/components/budget/cost-view-toggle'
+import { toGross, toNet } from '@/lib/budget/markup'
 import { CAMPAIGN_STATUSES, type CampaignStatus } from '@/lib/constants'
 
 interface Campaign {
@@ -25,6 +27,7 @@ interface Campaign {
     id: string
     name: string
     client_code: string
+    markup_percentage?: number | null
   }
   workamajig_code?: string
 }
@@ -32,6 +35,8 @@ interface Campaign {
 interface WorkspaceHeaderProps {
   campaign: Campaign
   allocatedBudget: number
+  costView: CostView
+  onCostViewChange: (view: CostView) => void
   onStatusChange?: (status: CampaignStatus) => void
 }
 
@@ -52,11 +57,24 @@ function formatDate(dateStr: string) {
   })
 }
 
-export function WorkspaceHeader({ campaign, allocatedBudget, onStatusChange }: WorkspaceHeaderProps) {
+export function WorkspaceHeader({
+  campaign,
+  allocatedBudget,
+  costView,
+  onCostViewChange,
+  onStatusChange,
+}: WorkspaceHeaderProps) {
   const [status, setStatus] = useState<CampaignStatus>(campaign.status)
   const [isUpdating, setIsUpdating] = useState(false)
 
-  const isOverBudget = allocatedBudget > campaign.total_budget
+  const markupPercentage = campaign.client?.markup_percentage ?? 0
+  // total_budget is always the client-approved (gross) figure; allocatedBudget
+  // is the raw sum of tactic (net) budgets. Convert both to the same basis
+  // before comparing, based on which view is selected.
+  const displayAllocated = costView === 'gross' ? toGross(allocatedBudget, markupPercentage) : allocatedBudget
+  const displayTarget = costView === 'gross' ? campaign.total_budget : toNet(campaign.total_budget, markupPercentage)
+
+  const isOverBudget = displayAllocated > displayTarget
   const budgetColorClass = isOverBudget
     ? 'text-amber-600 font-semibold'
     : 'text-green-600 font-semibold'
@@ -115,16 +133,18 @@ export function WorkspaceHeader({ campaign, allocatedBudget, onStatusChange }: W
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <span>Budget:</span>
           <span className={budgetColorClass}>
-            {formatCurrency(allocatedBudget)}
+            {formatCurrency(displayAllocated)}
           </span>
           <span>/</span>
-          <span className="text-foreground font-medium">{formatCurrency(campaign.total_budget)}</span>
+          <span className="text-foreground font-medium">{formatCurrency(displayTarget)}</span>
           {isOverBudget && (
             <Badge variant="outline" className="ml-1 text-xs border-amber-300 bg-amber-50 text-amber-700">
               Over Budget
             </Badge>
           )}
         </div>
+
+        <CostViewToggle value={costView} onChange={onCostViewChange} />
 
         {/* Status badge (clickable dropdown) */}
         <DropdownMenu>

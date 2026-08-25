@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useCampaign } from '@/hooks/use-campaign'
 import { useTactics } from '@/hooks/use-tactics'
 import { WorkspaceHeader } from '@/components/layout/workspace-header'
@@ -10,6 +11,7 @@ import { AudienceList } from '@/components/audience/audience-list'
 import { BudgetSummary } from '@/components/budget/budget-summary'
 import { ReconciliationTab } from '@/components/reconciliation/reconciliation-tab'
 import { DocumentHub } from '@/components/documents/document-hub'
+import type { CostView } from '@/components/budget/cost-view-toggle'
 import type { CampaignStatus } from '@/lib/constants'
 
 interface CampaignWorkspaceProps {
@@ -19,6 +21,7 @@ interface CampaignWorkspaceProps {
 export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
   const { campaign, isLoading: campaignLoading, error: campaignError, mutate } = useCampaign(campaignId)
   const { tactics } = useTactics(campaignId)
+  const [headerCostView, setHeaderCostView] = useState<CostView>('net')
 
   const allocatedBudget = tactics.reduce(
     (sum: number, t: { budget?: number }) => sum + (t.budget ?? 0),
@@ -52,10 +55,13 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
     mutate({ ...campaign, status }, false)
   }
 
+  const markupPercentage = campaign.client?.markup_percentage ?? 0
+
   const tacticsContent = (
     <TacticsGrid
       campaignId={campaignId}
       campaignBudget={campaign.total_budget ?? 0}
+      markupPercentage={markupPercentage}
     />
   )
 
@@ -66,6 +72,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
       campaignId={campaignId}
       tactics={tactics}
       campaign={campaign}
+      markupPercentage={markupPercentage}
     />
   )
 
@@ -86,6 +93,8 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
       <WorkspaceHeader
         campaign={campaign}
         allocatedBudget={allocatedBudget}
+        costView={headerCostView}
+        onCostViewChange={setHeaderCostView}
         onStatusChange={handleStatusChange}
       />
       <div className="flex-1 overflow-hidden">
