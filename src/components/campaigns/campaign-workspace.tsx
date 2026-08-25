@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { TacticsGrid } from '@/components/tactics/tactics-grid'
 import { AudienceList } from '@/components/audience/audience-list'
 import { BudgetSummary } from '@/components/budget/budget-summary'
+import { ReconciliationTab } from '@/components/reconciliation/reconciliation-tab'
 import { DocumentHub } from '@/components/documents/document-hub'
 import type { CampaignStatus } from '@/lib/constants'
 
@@ -68,6 +69,10 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
     />
   )
 
+  const reconciliationContent = (
+    <ReconciliationTab clientId={campaign.client_id} />
+  )
+
   const documentsContent = (
     <DocumentHub
       campaignId={campaignId}
@@ -88,6 +93,7 @@ export function CampaignWorkspace({ campaignId }: CampaignWorkspaceProps) {
           tacticsContent={tacticsContent}
           audienceContent={audienceContent}
           budgetContent={budgetContent}
+          reconciliationContent={reconciliationContent}
           documentsContent={documentsContent}
         />
       </div>

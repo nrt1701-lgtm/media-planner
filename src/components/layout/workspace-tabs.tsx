@@ -6,6 +6,7 @@ interface WorkspaceTabsProps {
   tacticsContent?: React.ReactNode
   audienceContent?: React.ReactNode
   budgetContent?: React.ReactNode
+  reconciliationContent?: React.ReactNode
   documentsContent?: React.ReactNode
 }
 
@@ -13,6 +14,7 @@ export function WorkspaceTabs({
   tacticsContent,
   audienceContent,
   budgetContent,
+  reconciliationContent,
   documentsContent,
 }: WorkspaceTabsProps) {
   return (
@@ -23,6 +25,7 @@ export function WorkspaceTabs({
             { value: 'tactics', label: 'Tactics' },
             { value: 'audience', label: 'Audience' },
             { value: 'budget', label: 'Budget Summary' },
+            { value: 'reconciliation', label: 'Reconciliation' },
             { value: 'documents', label: 'Generate Documents' },
           ].map(({ value, label }) => (
             <TabsTrigger
@@ -56,6 +59,14 @@ export function WorkspaceTabs({
         {budgetContent ?? (
           <div className="p-6">
             <p className="text-sm text-muted-foreground">Budget summary coming soon.</p>
+          </div>
+        )}
+      </TabsContent>
+
+      <TabsContent value="reconciliation" className="flex-1 m-0 overflow-auto">
+        {reconciliationContent ?? (
+          <div className="p-6">
+            <p className="text-sm text-muted-foreground">Reconciliation coming soon.</p>
           </div>
         )}
       </TabsContent>
