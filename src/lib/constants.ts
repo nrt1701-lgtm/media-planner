@@ -4,6 +4,9 @@ export type CampaignStatus = typeof CAMPAIGN_STATUSES[number]
 export const RATE_TYPES = ['CPM', 'CPC', 'CPA', 'flat_rate', 'custom'] as const
 export type RateType = typeof RATE_TYPES[number]
 
+export const FUNNEL_STAGES = ['Awareness', 'Consideration', 'Conversion'] as const
+export type FunnelStage = typeof FUNNEL_STAGES[number]
+
 export const STATUS_COLORS: Record<CampaignStatus, string> = {
   draft:     'bg-brand-sand text-brand-canyon',
   planning:  'bg-brand-teal/15 text-brand-teal',

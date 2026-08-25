@@ -124,6 +124,8 @@ export function CsvUploadDialog({
       rate: r.data.rate ?? 0,
       landing_page_url: r.data.landing_page_url ?? '',
       audience_notes: r.data.audience_notes,
+      funnel_stage: r.data.funnel_stage,
+      objective: r.data.objective,
       ad_spec_ids: [],
     }))
 

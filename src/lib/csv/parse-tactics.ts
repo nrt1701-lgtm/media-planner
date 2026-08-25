@@ -1,4 +1,4 @@
-import { RATE_TYPES } from '@/lib/constants'
+import { RATE_TYPES, FUNNEL_STAGES } from '@/lib/constants'
 
 export interface ParsedTacticRow {
   name?: string
@@ -12,6 +12,8 @@ export interface ParsedTacticRow {
   rate?: number
   landing_page_url?: string
   audience_notes?: string
+  funnel_stage?: string
+  objective?: string
 }
 
 export interface ParsedTacticResult {
@@ -43,6 +45,10 @@ const HEADER_MAP: Record<string, keyof ParsedTacticRow> = {
   url: 'landing_page_url',
   audience_notes: 'audience_notes',
   'audience notes': 'audience_notes',
+  funnel_stage: 'funnel_stage',
+  'funnel stage': 'funnel_stage',
+  'funnel location': 'funnel_stage',
+  objective: 'objective',
 }
 
 function parseRow(headers: string[], values: string[]): ParsedTacticRow {
@@ -76,6 +82,10 @@ function validateRow(data: ParsedTacticRow, rowIndex: number): string[] {
 
   if (data.rate_type !== undefined && !(RATE_TYPES as readonly string[]).includes(data.rate_type)) {
     errs.push(`Invalid rate_type "${data.rate_type}" — must be one of: ${RATE_TYPES.join(', ')}`)
+  }
+
+  if (data.funnel_stage !== undefined && !(FUNNEL_STAGES as readonly string[]).includes(data.funnel_stage)) {
+    errs.push(`Invalid funnel_stage "${data.funnel_stage}" — must be one of: ${FUNNEL_STAGES.join(', ')}`)
   }
 
   if (data.flight_start && isNaN(Date.parse(data.flight_start))) {
@@ -164,6 +174,8 @@ export const CSV_TEMPLATE_HEADERS = [
   'rate',
   'landing_page_url',
   'audience_notes',
+  'funnel_stage',
+  'objective',
 ]
 
 export const CSV_TEMPLATE_EXAMPLE_ROW = [
@@ -178,6 +190,8 @@ export const CSV_TEMPLATE_EXAMPLE_ROW = [
   '8.50',
   'https://example.com/landing',
   'Adults 25-54',
+  'Awareness',
+  'Drive brand lift among core audience',
 ]
 
 export function generateCsvTemplate(): string {
