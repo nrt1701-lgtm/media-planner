@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { RATE_TYPES } from '@/lib/constants'
+import { RATE_TYPES, FUNNEL_STAGES } from '@/lib/constants'
 
 export const createTacticSchema = z.object({
   name: z.string().default(''),
@@ -16,6 +16,8 @@ export const createTacticSchema = z.object({
   landing_page_url: z.string().url().optional().or(z.literal('')).nullable(),
   audience_notes: z.string().optional().nullable(),
   audience_id: z.string().uuid().optional().nullable(),
+  funnel_stage: z.enum(FUNNEL_STAGES).optional().nullable(),
+  objective: z.string().optional().nullable(),
   sort_order: z.number().int().default(0),
 })
 
@@ -40,5 +42,7 @@ export const updateTacticSchema = z.object({
   landing_page_url: z.string().url().optional().or(z.literal('')).nullable(),
   audience_notes: z.string().optional().nullable(),
   audience_id: z.string().uuid().optional().nullable(),
+  funnel_stage: z.enum(FUNNEL_STAGES).optional().nullable(),
+  objective: z.string().optional().nullable(),
   sort_order: z.number().int().optional(),
 })

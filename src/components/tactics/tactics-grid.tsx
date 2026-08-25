@@ -19,7 +19,7 @@ import { BudgetFooter } from './budget-footer'
 import { BulkActionsBar } from './bulk-actions-bar'
 import { CsvUploadDialog } from './csv-upload-dialog'
 import { PlusIcon, UploadIcon } from 'lucide-react'
-import type { RateType } from '@/lib/constants'
+import type { RateType, FunnelStage } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
 
 interface Tactic {
@@ -37,6 +37,8 @@ interface Tactic {
   est_impressions?: number | null
   landing_page_url?: string | null
   audience_id?: string | null
+  funnel_stage?: FunnelStage | null
+  objective?: string | null
   sort_order?: number
 }
 
@@ -327,6 +329,8 @@ export function TacticsGrid({ campaignId, campaignBudget }: TacticsGridProps) {
                 <TableHead className="min-w-[140px]">Name</TableHead>
                 <TableHead className="min-w-[130px]">Audience</TableHead>
                 <TableHead className="min-w-[110px]">Placement</TableHead>
+                <TableHead className="min-w-[110px]">Funnel Location</TableHead>
+                <TableHead className="min-w-[130px]">Objective</TableHead>
                 <TableHead className="min-w-[120px]">Format(s)</TableHead>
                 <TableHead className="min-w-[110px]">Flight Start</TableHead>
                 <TableHead className="min-w-[110px]">Flight End</TableHead>

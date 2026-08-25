@@ -24,14 +24,16 @@ import { InlineCell, type CellHandle } from './inline-cell'
 import { ChannelSelect } from './channel-select'
 import { RateTypeSelect } from './rate-type-select'
 import { AudienceSelect } from './audience-select'
+import { FunnelStageSelect } from './funnel-stage-select'
 import type { Audience } from '@/hooks/use-audiences'
 import { AdSpecPicker } from './ad-spec-picker'
 import { GripVerticalIcon, MoreHorizontalIcon, CopyIcon, Trash2Icon } from 'lucide-react'
-import { type RateType } from '@/lib/constants'
+import { type RateType, type FunnelStage } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
 
 const TAB_ORDER = [
   'platform', 'channel', 'name', 'audience_id', 'placement',
+  'funnel_stage', 'objective',
   'flight_start', 'flight_end', 'budget', 'rate_type', 'rate',
   'landing_page_url',
 ] as const
@@ -56,6 +58,8 @@ interface Tactic {
   est_impressions?: number | null
   landing_page_url?: string | null
   audience_id?: string | null
+  funnel_stage?: FunnelStage | null
+  objective?: string | null
   sort_order?: number
 }
 
@@ -249,6 +253,29 @@ export function TacticRow({
             onSave={(v) => patch({ placement: v })}
             onTab={() => focusCell('placement', 1)}
             onShiftTab={() => focusCell('placement', -1)}
+          />
+        </TableCell>
+
+        {/* Funnel Location */}
+        <TableCell className="min-w-[110px]">
+          <FunnelStageSelect
+            ref={(h) => { cellRefs.current.funnel_stage = h }}
+            value={tactic.funnel_stage}
+            onSave={(v) => patch({ funnel_stage: v })}
+            onTab={() => focusCell('funnel_stage', 1)}
+            onShiftTab={() => focusCell('funnel_stage', -1)}
+          />
+        </TableCell>
+
+        {/* Objective */}
+        <TableCell className="min-w-[130px]">
+          <InlineCell
+            ref={(h) => { cellRefs.current.objective = h }}
+            value={tactic.objective}
+            placeholder="—"
+            onSave={(v) => patch({ objective: v || null })}
+            onTab={() => focusCell('objective', 1)}
+            onShiftTab={() => focusCell('objective', -1)}
           />
         </TableCell>
 
