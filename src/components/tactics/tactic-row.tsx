@@ -30,6 +30,7 @@ import { AdSpecPicker } from './ad-spec-picker'
 import { GripVerticalIcon, MoreHorizontalIcon, CopyIcon, Trash2Icon } from 'lucide-react'
 import { type RateType, type FunnelStage } from '@/lib/constants'
 import { calculateImpressions } from '@/lib/impressions/calculate'
+import { toGross } from '@/lib/budget/markup'
 
 const TAB_ORDER = [
   'platform', 'channel', 'name', 'audience_id', 'placement',
@@ -68,6 +69,7 @@ interface TacticRowProps {
   adSpecs: AdSpec[]
   audiences: Audience[]
   campaignId: string
+  markupPercentage: number
   isSelected: boolean
   isDragOver: boolean
   onToggleSelect: (id: string) => void
@@ -106,6 +108,7 @@ export function TacticRow({
   adSpecs,
   audiences,
   campaignId,
+  markupPercentage,
   isSelected,
   isDragOver,
   onToggleSelect,
@@ -380,6 +383,11 @@ export function TacticRow({
             onTab={() => focusCell('landing_page_url', 1)}
             onShiftTab={() => focusCell('landing_page_url', -1)}
           />
+        </TableCell>
+
+        {/* Gross Cost — read-only, computed from net budget + client markup, skipped in tab order */}
+        <TableCell className="min-w-[100px] text-muted-foreground text-sm px-2">
+          {tactic.budget != null ? formatCurrency(toGross(tactic.budget, markupPercentage)) : <span className="text-muted-foreground">—</span>}
         </TableCell>
 
         {/* Actions */}

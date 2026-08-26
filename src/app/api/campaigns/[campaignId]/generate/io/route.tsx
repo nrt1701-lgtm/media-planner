@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { renderToBuffer, Document } from '@react-pdf/renderer'
 import { IoDocument } from '@/lib/documents/io-pdf/io-document'
+import { toGross } from '@/lib/budget/markup'
 import React from 'react'
 import type { ComponentProps } from 'react'
 
@@ -16,7 +17,7 @@ export async function POST(
   // 1. Fetch campaign with client
   const { data: campaign, error: campaignError } = await supabase
     .from('campaigns')
-    .select('*, clients(id, name)')
+    .select('*, clients(id, name, markup_percentage)')
     .eq('id', campaignId)
     .single()
 
@@ -52,7 +53,15 @@ export async function POST(
     .select('agency_logo_url, io_terms_template')
     .single()
 
-  const client = campaign.clients as { id: string; name: string } | null
+  const client = campaign.clients as { id: string; name: string; markup_percentage: number } | null
+  const markupPercentage = client?.markup_percentage ?? 0
+
+  // The IO is client-facing, so every cost shown must be gross (net media
+  // cost + markup) — the client never sees agency/net cost.
+  const grossTactics = (tactics ?? []).map((t) => ({
+    ...t,
+    budget: t.budget != null ? toGross(t.budget, markupPercentage) : t.budget,
+  }))
 
   // 5. Render to PDF buffer
   let pdfBuffer: Buffer
@@ -69,7 +78,7 @@ export async function POST(
         preparedBy={mediaPlan.prepared_by ?? null}
         audienceStrategy={mediaPlan.audience_strategy ?? null}
         ioTermsTemplate={settings?.io_terms_template ?? ''}
-        tactics={tactics ?? []}
+        tactics={grossTactics}
       />
     ) as React.ReactElement<ComponentProps<typeof Document>>
     pdfBuffer = await renderToBuffer(docElement)

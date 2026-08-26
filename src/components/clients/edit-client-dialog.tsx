@@ -19,6 +19,7 @@ interface Client {
   name: string
   client_code: string
   industry?: string | null
+  markup_percentage?: number | null
 }
 
 interface EditClientDialogProps {
@@ -39,6 +40,7 @@ export function EditClientDialog({
   const [name, setName] = useState(client.name)
   const [clientCode, setClientCode] = useState(client.client_code)
   const [industry, setIndustry] = useState(client.industry ?? '')
+  const [markupPercentage, setMarkupPercentage] = useState(String(client.markup_percentage ?? 0))
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -50,6 +52,7 @@ export function EditClientDialog({
       setName(client.name)
       setClientCode(client.client_code)
       setIndustry(client.industry ?? '')
+      setMarkupPercentage(String(client.markup_percentage ?? 0))
       setError(null)
       setConfirmDelete(false)
     }
@@ -68,6 +71,7 @@ export function EditClientDialog({
           name,
           client_code: clientCode,
           industry: industry || undefined,
+          markup_percentage: markupPercentage === '' ? 0 : parseFloat(markupPercentage),
         }),
       })
 
@@ -157,6 +161,21 @@ export function EditClientDialog({
               onChange={(e) => setIndustry(e.target.value)}
               placeholder="Retail, Healthcare, Finance…"
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="edit-client-markup">Markup %</Label>
+            <Input
+              id="edit-client-markup"
+              type="number"
+              min="0"
+              step="0.01"
+              value={markupPercentage}
+              onChange={(e) => setMarkupPercentage(e.target.value)}
+              placeholder="0"
+            />
+            <p className="text-xs text-muted-foreground">
+              Applied to net media cost for client-facing totals (Insertion Orders, Gross view)
+            </p>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <DialogFooter>

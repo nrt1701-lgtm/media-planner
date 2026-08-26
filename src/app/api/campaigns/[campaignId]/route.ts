@@ -2,6 +2,31 @@ import type { NextRequest } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateCampaignSchema } from '@/lib/validators/campaign'
 
+interface RawMediaPlan {
+  id: string
+}
+
+interface RawClient {
+  id: string
+  name: string
+  client_code: string
+  markup_percentage: number
+}
+
+function flattenCampaign(
+  data: Record<string, unknown> & { media_plans: RawMediaPlan[] | RawMediaPlan | null; clients: RawClient[] | RawClient | null }
+) {
+  const { media_plans, clients, ...campaign } = data
+  const plans = Array.isArray(media_plans) ? media_plans : media_plans ? [media_plans] : []
+  const client = Array.isArray(clients) ? (clients[0] ?? null) : clients
+
+  return {
+    ...campaign,
+    plan_id: plans.length > 0 ? plans[0].id : null,
+    client,
+  }
+}
+
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ campaignId: string }> }
@@ -11,19 +36,13 @@ export async function GET(
 
   const { data, error } = await supabase
     .from('campaigns')
-    .select('*, media_plans(id)')
+    .select('*, media_plans(id), clients(id, name, client_code, markup_percentage)')
     .eq('id', campaignId)
     .single()
 
   if (error) return Response.json({ error: error.message }, { status: 404 })
 
-  const { media_plans, ...campaign } = data as typeof data & { media_plans: { id: string }[] }
-  const result = {
-    ...campaign,
-    plan_id: Array.isArray(media_plans) && media_plans.length > 0 ? media_plans[0].id : null,
-  }
-
-  return Response.json(result)
+  return Response.json(flattenCampaign(data as never))
 }
 
 export async function PATCH(
@@ -43,18 +62,12 @@ export async function PATCH(
     .from('campaigns')
     .update(parsed.data)
     .eq('id', campaignId)
-    .select('*, media_plans(id)')
+    .select('*, media_plans(id), clients(id, name, client_code, markup_percentage)')
     .single()
 
   if (error) return Response.json({ error: error.message }, { status: 500 })
 
-  const { media_plans, ...campaign } = data as typeof data & { media_plans: { id: string }[] }
-  const result = {
-    ...campaign,
-    plan_id: Array.isArray(media_plans) && media_plans.length > 0 ? media_plans[0].id : null,
-  }
-
-  return Response.json(result)
+  return Response.json(flattenCampaign(data as never))
 }
 
 export async function DELETE(
