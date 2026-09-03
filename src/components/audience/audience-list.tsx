@@ -6,12 +6,13 @@ import { fetcher } from '@/lib/fetcher'
 import { toast } from 'sonner'
 import { useAudiences } from '@/hooks/use-audiences'
 import { AudienceCard } from './audience-card'
+import { CsvUploadDialog } from './csv-upload-dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { PlusIcon } from 'lucide-react'
+import { PlusIcon, UploadIcon } from 'lucide-react'
 
 interface MediaPlan {
   notes?: string | null
@@ -33,6 +34,7 @@ export function AudienceList({ campaignId }: AudienceListProps) {
   const [preparedBy, setPreparedBy] = useState('')
   const [planSaveStatus, setPlanSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [adding, setAdding] = useState(false)
+  const [csvOpen, setCsvOpen] = useState(false)
   const initialized = useRef(false)
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -137,15 +139,26 @@ export function AudienceList({ campaignId }: AudienceListProps) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-foreground">Target Audiences</h3>
-          <Button
-            size="sm"
-            onClick={handleAddAudience}
-            disabled={adding}
-            className="gap-1.5"
-          >
-            <PlusIcon className="size-4" />
-            {adding ? 'Adding...' : 'Add Audience'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => setCsvOpen(true)}
+              className="gap-1.5"
+            >
+              <UploadIcon className="size-4" />
+              Import CSV
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleAddAudience}
+              disabled={adding}
+              className="gap-1.5"
+            >
+              <PlusIcon className="size-4" />
+              {adding ? 'Adding...' : 'Add Audience'}
+            </Button>
+          </div>
         </div>
 
         {audiences.length === 0 ? (
@@ -153,10 +166,16 @@ export function AudienceList({ campaignId }: AudienceListProps) {
             <p className="text-sm text-muted-foreground mb-3">
               No audiences yet — define your target segments to assign them to individual tactics.
             </p>
-            <Button size="sm" variant="outline" onClick={handleAddAudience} disabled={adding} className="gap-1.5">
-              <PlusIcon className="size-4" />
-              Add Audience
-            </Button>
+            <div className="flex items-center justify-center gap-2">
+              <Button size="sm" variant="outline" onClick={handleAddAudience} disabled={adding} className="gap-1.5">
+                <PlusIcon className="size-4" />
+                Add Audience
+              </Button>
+              <Button size="sm" variant="outline" onClick={() => setCsvOpen(true)} className="gap-1.5">
+                <UploadIcon className="size-4" />
+                Import CSV
+              </Button>
+            </div>
           </div>
         ) : (
           <div className="space-y-3">
@@ -173,6 +192,13 @@ export function AudienceList({ campaignId }: AudienceListProps) {
           </div>
         )}
       </div>
+
+      <CsvUploadDialog
+        open={csvOpen}
+        onOpenChange={setCsvOpen}
+        campaignId={campaignId}
+        onSuccess={() => mutate()}
+      />
     </div>
   )
 }
