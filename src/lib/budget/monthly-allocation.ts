@@ -1,4 +1,4 @@
-import { addMonths, differenceInDays, endOfMonth, max, min, startOfMonth } from 'date-fns'
+import { differenceInDays, max, min } from 'date-fns'
 
 export interface MonthBucket {
   start: Date
@@ -6,27 +6,51 @@ export interface MonthBucket {
   key: string // 'YYYY-MM'
 }
 
+// All month bucketing below operates in UTC. Tactic flight dates are
+// date-only ISO strings (e.g. '2027-01-01'), which `new Date(...)` parses as
+// UTC midnight. Reading them back with local-time getters (getFullYear,
+// getMonth) rolls the date back a calendar day in any negative-UTC-offset
+// timezone (i.e. everywhere in the US), which silently shifts month
+// boundaries — e.g. a Jan 1 flight_start reads as Dec 31 locally. Using the
+// UTC getters/constructors throughout keeps every date anchored to the
+// calendar day it was actually entered as.
 export function monthKey(date: Date): string {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`
+  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
 export function formatMonthLabel(key: string): string {
   const [year, month] = key.split('-').map(Number)
-  return new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  return new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC',
+  })
+}
+
+function startOfMonthUTC(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
+}
+
+function endOfMonthUTC(date: Date): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + 1, 0))
+}
+
+function addMonthsUTC(date: Date, count: number): Date {
+  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth() + count, 1))
 }
 
 // Generates calendar-month buckets spanning [rangeStart, rangeEnd], clipping the
 // first and last bucket to the range (mirrors generatePeriods in periods.ts).
 export function generateMonths(rangeStart: Date, rangeEnd: Date): MonthBucket[] {
   const months: MonthBucket[] = []
-  let current = startOfMonth(rangeStart)
-  const last = startOfMonth(rangeEnd)
+  let current = startOfMonthUTC(rangeStart)
+  const last = startOfMonthUTC(rangeEnd)
 
   while (current <= last) {
     const start = max([current, rangeStart])
-    const end = min([endOfMonth(current), rangeEnd])
+    const end = min([endOfMonthUTC(current), rangeEnd])
     months.push({ start, end, key: monthKey(current) })
-    current = addMonths(current, 1)
+    current = addMonthsUTC(current, 1)
   }
 
   return months

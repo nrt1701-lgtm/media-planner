@@ -22,6 +22,13 @@ export interface ParsedTacticResult {
   errors: string[]
 }
 
+// Catches obviously mistyped years (e.g. '0027-01-01' instead of
+// '2027-01-01') that Date.parse alone would accept as valid.
+function isPlausibleFlightDate(dateStr: string): boolean {
+  const year = new Date(dateStr).getUTCFullYear()
+  return !isNaN(year) && year >= 1970 && year <= 2100
+}
+
 // Maps flexible CSV header names (lower-cased, trimmed) to tactic field names
 const HEADER_MAP: Record<string, keyof ParsedTacticRow> = {
   name: 'name',
@@ -88,11 +95,11 @@ function validateRow(data: ParsedTacticRow, rowIndex: number): string[] {
     errs.push(`Invalid funnel_stage "${data.funnel_stage}" — must be one of: ${FUNNEL_STAGES.join(', ')}`)
   }
 
-  if (data.flight_start && isNaN(Date.parse(data.flight_start))) {
+  if (data.flight_start && !isPlausibleFlightDate(data.flight_start)) {
     errs.push(`Invalid flight_start date "${data.flight_start}"`)
   }
 
-  if (data.flight_end && isNaN(Date.parse(data.flight_end))) {
+  if (data.flight_end && !isPlausibleFlightDate(data.flight_end)) {
     errs.push(`Invalid flight_end date "${data.flight_end}"`)
   }
 

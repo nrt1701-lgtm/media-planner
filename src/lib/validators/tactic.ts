@@ -1,14 +1,26 @@
 import { z } from 'zod'
 import { RATE_TYPES, FUNNEL_STAGES } from '@/lib/constants'
 
+// Catches obviously mistyped dates (e.g. a year typed as '0027' instead of
+// '2027' into a native date input's year segment) without imposing a strict
+// format — a bad year here would otherwise silently stretch date-range
+// calculations (like the Reconciliation grid) across centuries.
+const plausibleFlightDate = z.string().refine(
+  (v) => {
+    const year = new Date(v).getUTCFullYear()
+    return !isNaN(year) && year >= 1970 && year <= 2100
+  },
+  { message: 'Flight date must have a year between 1970 and 2100' }
+)
+
 export const createTacticSchema = z.object({
   name: z.string().default(''),
   channel: z.string().optional(),
   platform: z.string().optional(),
   placement: z.string().optional(),
   ad_spec_ids: z.array(z.string().uuid()).default([]),
-  flight_start: z.string().optional(),
-  flight_end: z.string().optional(),
+  flight_start: plausibleFlightDate.optional(),
+  flight_end: plausibleFlightDate.optional(),
   budget: z.number().min(0).default(0),
   rate_type: z.enum(RATE_TYPES).default('CPM'),
   rate: z.number().min(0).default(0),
@@ -33,8 +45,8 @@ export const updateTacticSchema = z.object({
   platform: z.string().optional(),
   placement: z.string().optional(),
   ad_spec_ids: z.array(z.string().uuid()).optional(),
-  flight_start: z.string().optional(),
-  flight_end: z.string().optional(),
+  flight_start: plausibleFlightDate.optional(),
+  flight_end: plausibleFlightDate.optional(),
   budget: z.number().min(0).optional(),
   rate_type: z.enum(RATE_TYPES).optional(),
   rate: z.number().min(0).optional(),

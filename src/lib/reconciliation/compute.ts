@@ -36,6 +36,15 @@ export interface ReconciliationGrid {
   platforms: PlatformRow[]
 }
 
+// Guards against a single malformed date (e.g. a mistyped year like
+// '0027-01-01') stretching the whole grid's date range across centuries.
+// The range is computed as min/max across every tactic's flight dates, so
+// one bad row would otherwise silently poison the entire advertiser's view.
+function isPlausibleFlightDate(dateStr: string): boolean {
+  const year = new Date(dateStr).getUTCFullYear()
+  return year >= 1970 && year <= 2100
+}
+
 // Builds the platform x month reconciliation grid: planned spend (allocated
 // from tactic budgets, day-weighted per calendar month), entered actuals for
 // past months, and an even split of the remaining budget across the months
@@ -47,7 +56,12 @@ export function buildReconciliationGrid(
   today: Date = new Date()
 ): ReconciliationGrid {
   const valid = tactics.flatMap((t) =>
-    t.platform && t.budget && t.flight_start && t.flight_end
+    t.platform &&
+    t.budget &&
+    t.flight_start &&
+    t.flight_end &&
+    isPlausibleFlightDate(t.flight_start) &&
+    isPlausibleFlightDate(t.flight_end)
       ? [{ platform: t.platform, budget: t.budget, flight_start: t.flight_start, flight_end: t.flight_end }]
       : []
   )
