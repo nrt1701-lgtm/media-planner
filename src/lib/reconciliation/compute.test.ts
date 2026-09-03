@@ -62,6 +62,20 @@ describe('buildReconciliationGrid', () => {
     expect(june.needed).toBe(0)
   })
 
+  it('excludes a tactic with an implausible flight date instead of stretching the whole grid across it', () => {
+    // Regression test: a mistyped year (e.g. '0027-01-01' instead of
+    // '2027-01-01') used to make the earliest-date-across-all-tactics range
+    // computation span centuries, since it's just a min() over every tactic.
+    const grid = buildReconciliationGrid(
+      [...tactics, { platform: 'Meta', budget: 65000, flight_start: '0027-01-01', flight_end: '2027-07-31' }],
+      [],
+      new Date('2026-04-01')
+    )
+    expect(grid.months.map((m) => m.key)).toEqual(['2026-04', '2026-05', '2026-06'])
+    const meta = grid.platforms.find((p) => p.platform === 'Meta')!
+    expect(meta.totalPlanned).toBe(3000)
+  })
+
   it('returns an empty grid when there are no usable tactics', () => {
     const grid = buildReconciliationGrid([], [], new Date('2026-04-01'))
     expect(grid.months).toEqual([])

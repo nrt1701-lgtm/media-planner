@@ -54,4 +54,13 @@ describe('monthKey', () => {
     expect(monthKey(new Date('2026-01-15'))).toBe('2026-01')
     expect(monthKey(new Date('2026-11-01'))).toBe('2026-11')
   })
+
+  // Regression test: flight dates are date-only ISO strings, parsed as UTC
+  // midnight. Reading them with local-time getters in a negative-UTC-offset
+  // timezone (any US timezone) rolls a month-1 date back to the previous
+  // month/year — e.g. this would return '2026-12' under the old
+  // getFullYear()/getMonth() implementation when run with TZ=America/Chicago.
+  it('is not affected by the local timezone (UTC-anchored)', () => {
+    expect(monthKey(new Date('2027-01-01'))).toBe('2027-01')
+  })
 })

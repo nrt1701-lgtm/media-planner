@@ -8,6 +8,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
+import { formatMonthLabel } from '@/lib/budget/monthly-allocation'
 import type { ReconciliationGrid as Grid, MonthCell } from '@/lib/reconciliation/compute'
 
 interface ReconciliationGridProps {
@@ -51,7 +52,7 @@ export function ReconciliationGrid({ grid, onSaveActual }: ReconciliationGridPro
               </th>
               {grid.months.map((m) => (
                 <th key={m.key} className="px-2 py-2 text-left font-medium text-muted-foreground min-w-[120px]">
-                  {formatMonthHeaderLabel(m.key)}
+                  {formatMonthLabel(m.key)}
                 </th>
               ))}
               <th className="px-3 py-2 text-right font-medium text-muted-foreground min-w-[110px]">
@@ -88,11 +89,6 @@ export function ReconciliationGrid({ grid, onSaveActual }: ReconciliationGridPro
       </div>
     </TooltipProvider>
   )
-}
-
-function formatMonthHeaderLabel(key: string): string {
-  const [year, month] = key.split('-').map(Number)
-  return new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
 }
 
 interface ReconciliationCellViewProps {
